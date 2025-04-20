@@ -1,0 +1,1175 @@
+<!DOCTYPE html><html lang="fr"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Grid - Système de mise en page bidimensionnel</title>
+    <style>
+        /* Styles généraux */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+        
+        h2 {
+            color: #2980b9;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        
+        h3 {
+            color: #16a085;
+            margin-top: 25px;
+        }
+        
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .description {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: Consolas, Monaco, 'Andale Mono', monospace;
+        }
+        
+        .control-panel {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .controls-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .control-item {
+            margin-bottom: 10px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        select, input[type="text"] {
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background-color: white;
+            width: 180px;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Démo Grid */
+        .grid-demo-container {
+            margin: 20px 0;
+            border: 2px dashed #ccc;
+            padding: 10px;
+            position: relative;
+        }
+        
+        .grid-container {
+            display: grid;
+            background-color: #ecf0f1;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            min-height: 300px;
+            transition: all 0.3s ease;
+        }
+        
+        .grid-item {
+            background-color: #3498db;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Couleurs alternées pour les grid items */
+        .grid-item:nth-child(2n) {
+            background-color: #e74c3c;
+        }
+        
+        .grid-item:nth-child(3n) {
+            background-color: #2ecc71;
+        }
+        
+        .grid-item:nth-child(4n) {
+            background-color: #f39c12;
+        }
+        
+        .grid-item:nth-child(5n) {
+            background-color: #9b59b6;
+        }
+        
+        /* Grid Areas démo */
+        .grid-areas-demo {
+            display: grid;
+            min-height: 400px;
+            background-color: #ecf0f1;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .grid-area-item {
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 4px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .header-area {
+            background-color: #3498db;
+        }
+        
+        .sidebar-area {
+            background-color: #e74c3c;
+        }
+        
+        .content-area {
+            background-color: #2ecc71;
+        }
+        
+        .footer-area {
+            background-color: #f39c12;
+        }
+        
+        /* Responsive Gallery */
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+        }
+        
+        .gallery-item {
+            height: 150px;
+            background-color: #bdc3c7;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7f8c8d;
+            font-weight: bold;
+        }
+        
+        /* Website Layout */
+        .website-layout {
+            display: grid;
+            grid-template-areas:
+                "header header header"
+                "nav content sidebar"
+                "footer footer footer";
+            grid-template-columns: 200px 1fr 200px;
+            grid-template-rows: auto 1fr auto;
+            min-height: 500px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            gap: 10px;
+            padding: 10px;
+        }
+        
+        .website-layout > div {
+            padding: 20px;
+            border-radius: 4px;
+            color: white;
+        }
+        
+        .website-header {
+            grid-area: header;
+            background-color: #3498db;
+        }
+        
+        .website-nav {
+            grid-area: nav;
+            background-color: #e74c3c;
+        }
+        
+        .website-content {
+            grid-area: content;
+            background-color: #2ecc71;
+        }
+        
+        .website-sidebar {
+            grid-area: sidebar;
+            background-color: #f39c12;
+        }
+        
+        .website-footer {
+            grid-area: footer;
+            background-color: #9b59b6;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .controls-group {
+                flex-direction: column;
+            }
+            
+            .website-layout {
+                grid-template-areas:
+                    "header"
+                    "nav"
+                    "content"
+                    "sidebar"
+                    "footer";
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Grid line numbers */
+        .grid-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        
+        .grid-line {
+            position: absolute;
+            background-color: rgba(189, 195, 199, 0.5);
+            z-index: 10;
+        }
+        
+        .grid-line-vertical {
+            width: 2px;
+            height: 100%;
+            top: 0;
+        }
+        
+        .grid-line-horizontal {
+            height: 2px;
+            width: 100%;
+            left: 0;
+        }
+        
+        .grid-line-number {
+            position: absolute;
+            background-color: rgba(52, 73, 94, 0.8);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            z-index: 11;
+        }
+        
+        /* Annotations */
+        .annotation {
+            position: absolute;
+            background-color: rgba(255,255,255,0.9);
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            max-width: 250px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧩 CSS Grid - Système de mise en page bidimensionnel</h1>
+
+    <div class="description">
+        <p>CSS Grid est un système de mise en page bidimensionnel qui permet de créer des designs complexes en divisant une page en colonnes et en lignes. Cette page démontre les principales fonctionnalités de Grid de manière interactive.</p>
+    </div>
+    
+    <!-- Section 1: Introduction à Grid -->
+    <h2>1. Qu'est-ce que CSS Grid? 📊</h2>
+    <div class="section">
+        <p>CSS Grid Layout est un système de mise en page <strong>bidimensionnel</strong> (lignes ET colonnes) conçu pour organiser des éléments dans un quadrillage.</p>
+        
+        <h3>Concepts clés:</h3>
+        <ul>
+            <li><strong>Conteneur Grid</strong>: l'élément parent avec <code>display: grid</code></li>
+            <li><strong>Élément Grid</strong>: les enfants directs du conteneur grid</li>
+            <li><strong>Lignes de grille</strong>: les lignes horizontales et verticales qui forment la grille</li>
+            <li><strong>Piste</strong>: une ligne ou une colonne complète de la grille</li>
+            <li><strong>Cellule</strong>: l'intersection d'une ligne et d'une colonne</li>
+            <li><strong>Zone</strong>: un ensemble rectangulaire de cellules adjacentes</li>
+        </ul>
+        
+        <div class="grid-demo-container">
+            <div class="grid-container" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 100px); gap: 10px;">
+                <div class="grid-item">1</div>
+                <div class="grid-item">2</div>
+                <div class="grid-item">3</div>
+                <div class="grid-item">4</div>
+                <div class="grid-item">5</div>
+                <div class="grid-item">6</div>
+                <div class="grid-item">7</div>
+                <div class="grid-item">8</div>
+                <div class="grid-item">9</div>
+            </div>
+            
+            <div class="annotation" style="top: 30px; right: 20px;">
+                ↑ Un conteneur grid basique avec 9 éléments.<br>
+                3 colonnes × 3 lignes, chaque colonne prenant 1fr (fraction) de l'espace disponible.
+            </div>
+        </div>
+        
+        <pre>/* CSS de base pour créer un conteneur grid */
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);  /* 3 colonnes de taille égale */
+  grid-template-rows: repeat(3, 100px);   /* 3 lignes de 100px */
+  gap: 10px;                              /* espacement entre les cellules */
+}</pre>
+    </div>
+    
+    <!-- Section 2: Définir les colonnes et les lignes -->
+    <h2>2. Définir colonnes et lignes 📏</h2>
+    <div class="section">
+        <p>Les propriétés <code>grid-template-columns</code> et <code>grid-template-rows</code> définissent la structure de base de la grille.</p>
+        
+        <div class="control-panel">
+            <div class="controls-group">
+                <div class="control-item">
+                    <label for="columns-input">grid-template-columns:</label>
+                    <input type="text" id="columns-input" value="repeat(3, 1fr)">
+                </div>
+                
+                <div class="control-item">
+                    <label for="rows-input">grid-template-rows:</label>
+                    <input type="text" id="rows-input" value="repeat(3, 100px)">
+                </div>
+                
+                <div class="control-item">
+                    <label for="gap-input">gap:</label>
+                    <input type="text" id="gap-input" value="10px">
+                </div>
+            </div>
+            
+            <div class="control-item">
+                <label for="item-count-grid">Nombre d'éléments:</label>
+                <input type="range" id="item-count-grid" min="1" max="12" value="9">
+                <span id="item-count-grid-value">9</span> éléments
+            </div>
+            
+            <div class="control-item">
+                <button id="show-grid-lines">Afficher les lignes de grille</button>
+                <button id="reset-grid">Réinitialiser</button>
+            </div>
+        </div>
+        
+        <div class="grid-demo-container" id="grid-demo-with-lines">
+            <div id="grid-template-demo" class="grid-container">
+                <!-- Les éléments seront ajoutés dynamiquement par JavaScript -->
+            </div>
+            
+            <div id="grid-lines" class="grid-lines" style="display: none;">
+                <!-- Les lignes de grille seront ajoutées dynamiquement par JavaScript -->
+            </div>
+            
+            <pre id="grid-template-css">display: grid;
+grid-template-columns: repeat(3, 1fr);
+grid-template-rows: repeat(3, 100px);
+gap: 10px;</pre>
+        </div>
+        
+        <h3>Unités et fonctions spéciales pour Grid:</h3>
+        <ul>
+            <li><strong>fr</strong>: unité de fraction flexible qui partage l'espace disponible</li>
+            <li><strong>auto</strong>: taille basée sur le contenu</li>
+            <li><strong>minmax(min, max)</strong>: définit une taille minimale et maximale</li>
+            <li><strong>repeat(n, pattern)</strong>: répète un motif n fois</li>
+        </ul>
+        
+        <h3>Exemples:</h3>
+        <pre>/* Différentes façons de définir des grilles */
+grid-template-columns: 1fr 2fr 1fr;               /* 3 colonnes avec la 2ème deux fois plus large */
+grid-template-columns: 200px auto 200px;          /* Colonnes fixes avec colonne centrale automatique */
+grid-template-columns: repeat(4, 1fr);            /* 4 colonnes égales */
+grid-template-columns: repeat(auto-fill, 200px);  /* Autant de colonnes de 200px que possible */
+grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));  /* Colonnes responsive */</pre>
+    </div>
+    
+    <!-- Section 3: Placement des éléments -->
+    <h2>3. Placement des éléments 📍</h2>
+    <div class="section">
+        <p>Les propriétés <code>grid-column</code> et <code>grid-row</code> permettent de placer précisément les éléments dans la grille.</p>
+        
+        <div class="control-panel">
+            <div class="controls-group">
+                <div class="control-item">
+                    <button id="demo-placement-1">Exemple 1: Élément étendu</button>
+                    <button id="demo-placement-2">Exemple 2: Positionnement précis</button>
+                    <button id="demo-placement-3">Exemple 3: Layout complexe</button>
+                    <button id="reset-placement">Réinitialiser</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid-demo-container">
+            <div id="grid-placement-demo" class="grid-container" style="grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(3, 100px); gap: 10px;">
+                <div class="grid-item">1</div>
+                <div class="grid-item">2</div>
+                <div class="grid-item">3</div>
+                <div class="grid-item">4</div>
+                <div class="grid-item">5</div>
+                <div class="grid-item">6</div>
+                <div class="grid-item">7</div>
+                <div class="grid-item">8</div>
+                <div class="grid-item">9</div>
+                <div class="grid-item">10</div>
+                <div class="grid-item">11</div>
+                <div class="grid-item">12</div>
+            </div>
+            
+            <pre id="grid-placement-css">/* Cliquez sur les exemples ci-dessus pour voir différentes façons de positionner les éléments */</pre>
+        </div>
+        
+        <h3>Syntaxe pour le placement:</h3>
+        <ul>
+            <li><strong>grid-column: start / end</strong>: définit les lignes de colonnes de début et de fin</li>
+            <li><strong>grid-row: start / end</strong>: définit les lignes de rangées de début et de fin</li>
+            <li><strong>grid-area: row-start / column-start / row-end / column-end</strong>: syntaxe raccourcie</li>
+            <li><strong>span n</strong>: s'étend sur n cellules (ex: <code>grid-column: 1 / span 2</code>)</li>
+        </ul>
+        
+        <h3>Exemples:</h3>
+        <pre>/* Différentes façons de positionner des éléments */
+.item1 {
+  grid-column: 1 / 3;      /* De la ligne de colonne 1 à 3 (occupe 2 colonnes) */
+  grid-row: 1 / 2;         /* Occupe la première ligne */
+}
+
+.item2 {
+  grid-column: 3 / span 2; /* À partir de la ligne 3, s'étend sur 2 colonnes */
+  grid-row: 1 / span 2;    /* À partir de la ligne 1, s'étend sur 2 lignes */
+}
+
+.item3 {
+  grid-area: 2 / 1 / 4 / 3; /* De la ligne de rangée 2 à 4, de la ligne de colonne 1 à 3 */
+}</pre>
+    </div>
+    
+    <!-- Section 4: Grid Areas -->
+    <h2>4. Grid Areas - Zones nommées 📋</h2>
+    <div class="section">
+        <p>La propriété <code>grid-template-areas</code> permet de définir des zones nommées pour créer des mises en page intuitives.</p>
+        
+        <div class="control-panel">
+            <div class="controls-group">
+                <div class="control-item">
+                    <button id="layout-desktop">Desktop Layout</button>
+                    <button id="layout-tablet">Tablet Layout</button>
+                    <button id="layout-mobile">Mobile Layout</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid-demo-container">
+            <div id="grid-areas-demo" class="grid-areas-demo">
+                <div class="grid-area-item header-area">Header</div>
+                <div class="grid-area-item sidebar-area">Sidebar</div>
+                <div class="grid-area-item content-area">Content</div>
+                <div class="grid-area-item footer-area">Footer</div>
+            </div>
+            
+            <pre id="grid-areas-css">display: grid;
+grid-template-areas:
+  "header header header"
+  "sidebar content content"
+  "footer footer footer";
+grid-template-columns: 1fr 3fr 1fr;
+grid-template-rows: auto 1fr auto;
+gap: 10px;</pre>
+        </div>
+        
+        <h3>Syntaxe pour les zones:</h3>
+        <ul>
+            <li>Chaque chaîne représente une ligne dans la grille</li>
+            <li>Les noms identiques créent une zone unique</li>
+            <li>Un point (<code>.</code>) représente une cellule vide</li>
+            <li>Les éléments sont placés avec <code>grid-area: nom-zone</code></li>
+        </ul>
+        
+        <h3>Exemple:</h3>
+        <pre>/* CSS pour définir une mise en page avec zones nommées */
+.container {
+  display: grid;
+  grid-template-areas:
+    "header header header"
+    "sidebar content content"
+    "footer footer footer";
+  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-rows: auto 1fr auto;
+}
+
+.header { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.content { grid-area: content; }
+.footer { grid-area: footer; }</pre>
+    </div>
+    
+    <!-- Section 5: Alignement et justification -->
+    <h2>5. Alignement et justification 📐</h2>
+    <div class="section">
+        <p>CSS Grid offre des propriétés puissantes pour aligner et justifier les éléments et le contenu.</p>
+        
+        <div class="control-panel">
+            <div class="controls-group">
+                <div class="control-item">
+                    <label for="justify-items">justify-items:</label>
+                    <select id="justify-items">
+                        <option value="stretch">stretch</option>
+                        <option value="start">start</option>
+                        <option value="center">center</option>
+                        <option value="end">end</option>
+                    </select>
+                </div>
+                
+                <div class="control-item">
+                    <label for="align-items">align-items:</label>
+                    <select id="align-items">
+                        <option value="stretch">stretch</option>
+                        <option value="start">start</option>
+                        <option value="center">center</option>
+                        <option value="end">end</option>
+                    </select>
+                </div>
+                
+                <div class="control-item">
+                    <label for="justify-content">justify-content:</label>
+                    <select id="justify-content">
+                        <option value="start">start</option>
+                        <option value="center">center</option>
+                        <option value="end">end</option>
+                        <option value="space-between">space-between</option>
+                        <option value="space-around">space-around</option>
+                        <option value="space-evenly">space-evenly</option>
+                    </select>
+                </div>
+                
+                <div class="control-item">
+                    <label for="align-content">align-content:</label>
+                    <select id="align-content">
+                        <option value="start">start</option>
+                        <option value="center">center</option>
+                        <option value="end">end</option>
+                        <option value="space-between">space-between</option>
+                        <option value="space-around">space-around</option>
+                        <option value="space-evenly">space-evenly</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button id="reset-alignment">Réinitialiser</button>
+        </div>
+        
+        <div class="grid-demo-container">
+            <div id="grid-alignment-demo" class="grid-container" style="grid-template-columns: repeat(3, 100px); grid-template-rows: repeat(3, 100px); gap: 10px; min-height: 400px; min-width: 400px;">
+                <div class="grid-item">1</div>
+                <div class="grid-item">2</div>
+                <div class="grid-item">3</div>
+                <div class="grid-item">4</div>
+                <div class="grid-item">5</div>
+                <div class="grid-item">6</div>
+            </div>
+            
+            <pre id="grid-alignment-css">display: grid;
+grid-template-columns: repeat(3, 100px);
+grid-template-rows: repeat(3, 100px);
+gap: 10px;
+justify-items: stretch;
+align-items: stretch;
+justify-content: start;
+align-content: start;</pre>
+        </div>
+        
+        <h3>Propriétés d'alignement:</h3>
+        <ul>
+            <li><strong>justify-items / align-items</strong>: aligne les éléments dans leur cellule (horizontalement / verticalement)</li>
+            <li><strong>justify-content / align-content</strong>: aligne l'ensemble de la grille dans le conteneur (horizontalement / verticalement)</li>
+            <li><strong>justify-self / align-self</strong>: aligne un élément spécifique dans sa cellule (remplace justify-items / align-items)</li>
+        </ul>
+    </div>
+    
+    <!-- Section 6: Exemples pratiques -->
+    <h2>6. Exemples pratiques 🛠️</h2>
+    <div class="section">
+        <h3>Galerie d'images responsive</h3>
+        <p>Une galerie qui s'adapte automatiquement au nombre d'images et à la taille de l'écran.</p>
+        
+        <pre>/* CSS pour une galerie responsive */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+}</pre>
+        
+        <div class="gallery-container">
+            <div class="gallery-item">Image 1</div>
+            <div class="gallery-item">Image 2</div>
+            <div class="gallery-item">Image 3</div>
+            <div class="gallery-item">Image 4</div>
+            <div class="gallery-item">Image 5</div>
+            <div class="gallery-item">Image 6</div>
+            <div class="gallery-item">Image 7</div>
+            <div class="gallery-item">Image 8</div>
+        </div>
+        
+        <h3>Mise en page complète de site web</h3>
+        <p>Une mise en page classique de site web avec header, footer, navigation, contenu et sidebar.</p>
+        
+        <pre>/* CSS pour une mise en page complète */
+.website {
+  display: grid;
+  grid-template-areas:
+    "header header header"
+    "nav content sidebar"
+    "footer footer footer";
+  grid-template-columns: 200px 1fr 200px;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .website {
+    grid-template-areas:
+      "header"
+      "nav"
+      "content"
+      "sidebar"
+      "footer";
+    grid-template-columns: 1fr;
+  }
+}</pre>
+        
+        <div class="website-layout">
+            <div class="website-header">Header</div>
+            <div class="website-nav">Navigation</div>
+            <div class="website-content">Contenu Principal</div>
+            <div class="website-sidebar">Sidebar</div>
+            <div class="website-footer">Footer</div>
+        </div>
+        
+        <button id="toggle-layout">Basculer vers layout mobile</button>
+    </div>
+    
+    <!-- Section 7: Astuces et bonnes pratiques -->
+    <h2>7. Astuces et bonnes pratiques 💡</h2>
+    <div class="section">
+        <ul>
+            <li><strong>Grid vs Flexbox</strong>: utilisez Grid pour les mises en page bidimensionnelles (ligne ET colonne), Flexbox pour les mises en page unidimensionnelles (ligne OU colonne)</li>
+            <li><strong>auto-fill vs auto-fit</strong>: 
+                <ul>
+                    <li><code>repeat(auto-fill, ...)</code> : garde la taille des cellules et ajoute des cellules vides</li>
+                    <li><code>repeat(auto-fit, ...)</code> : étire les cellules existantes pour remplir l'espace</li>
+                </ul>
+            </li>
+            <li><strong>minmax()</strong>: utilisez-le pour des designs responsive sans média queries</li>
+            <li><strong>grid-template-areas</strong>: idéal pour des mises en page qui changent entre desktop et mobile</li>
+            <li><strong>Nommez vos lignes</strong>: <code>grid-template-columns: [début] 1fr [milieu] 2fr [fin];</code></li>
+            <li><strong>Utilisez fr</strong> plutôt que des pourcentages pour une meilleure flexibilité</li>
+            <li><strong>Grilles imbriquées</strong>: n'hésitez pas à créer des grids à l'intérieur d'autres grids pour des mises en page complexes</li>
+        </ul>
+        
+        <div class="description">
+            <p><strong>Quand utiliser Grid?</strong></p>
+            <ul>
+                <li>Pour des mises en page bidimensionnelles (lignes ET colonnes)</li>
+                <li>Pour aligner précisément des éléments dans un quadrillage</li>
+                <li>Pour des mises en page complètes de sites web</li>
+                <li>Pour des interfaces complexes avec des zones bien définies</li>
+                <li>Pour des galeries et des grilles d'éléments</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Section 2: Définir colonnes et lignes
+        const gridTemplateDemo = document.getElementById('grid-template-demo');
+        const gridTemplateCss = document.getElementById('grid-template-css');
+        const columnsInput = document.getElementById('columns-input');
+        const rowsInput = document.getElementById('rows-input');
+        const gapInput = document.getElementById('gap-input');
+        const itemCountGrid = document.getElementById('item-count-grid');
+        const itemCountGridValue = document.getElementById('item-count-grid-value');
+        const gridLines = document.getElementById('grid-lines');
+        
+        function updateGridTemplate() {
+            const columns = columnsInput.value;
+            const rows = rowsInput.value;
+            const gap = gapInput.value;
+            
+            gridTemplateDemo.style.gridTemplateColumns = columns;
+            gridTemplateDemo.style.gridTemplateRows = rows;
+            gridTemplateDemo.style.gap = gap;
+            
+            // Mettre à jour le CSS affiché
+            gridTemplateCss.textContent = `display: grid;
+grid-template-columns: ${columns};
+grid-template-rows: ${rows};
+gap: ${gap};`;
+            
+            // Si les lignes de grille sont visibles, les mettre à jour
+            if (gridLines.style.display === 'block') {
+                updateGridLines();
+            }
+        }
+        
+        function updateGridItemCount() {
+            const count = parseInt(itemCountGrid.value);
+            itemCountGridValue.textContent = count;
+            
+            // Supprimer tous les éléments existants
+            while (gridTemplateDemo.firstChild) {
+                gridTemplateDemo.removeChild(gridTemplateDemo.firstChild);
+            }
+            
+            // Créer les nouveaux éléments
+            for (let i = 1; i <= count; i++) {
+                const item = document.createElement('div');
+                item.className = 'grid-item';
+                item.textContent = i;
+                gridTemplateDemo.appendChild(item);
+            }
+        }
+        
+        function updateGridLines() {
+            // Vider les lignes existantes
+            gridLines.innerHTML = '';
+            
+            // Obtenir les coordonnées des lignes de grille
+            const gridRect = gridTemplateDemo.getBoundingClientRect();
+            const containerRect = document.getElementById('grid-demo-with-lines').getBoundingClientRect();
+            const offsetX = gridRect.left - containerRect.left;
+            const offsetY = gridRect.top - containerRect.top;
+            
+            // Obtenir les infos sur les colonnes
+            const columnGap = parseFloat(getComputedStyle(gridTemplateDemo).columnGap);
+            const columnWidths = [];
+            const columnCount = gridTemplateDemo.style.gridTemplateColumns.split(' ').length;
+            
+            // Créer les lignes verticales
+            for (let i = 0; i <= columnCount; i++) {
+                const colPosition = i === 0 ? 0 : Array.from(gridTemplateDemo.children)
+                    .filter((_, index) => index % columnCount === i - 1)
+                    .reduce((pos, child) => pos + child.offsetWidth, 0) + (i * columnGap);
+                
+                const line = document.createElement('div');
+                line.className = 'grid-line grid-line-vertical';
+                line.style.left = (offsetX + colPosition) + 'px';
+                
+                const number = document.createElement('div');
+                number.className = 'grid-line-number';
+                number.textContent = i;
+                number.style.left = (offsetX + colPosition - 10) + 'px';
+                number.style.top = (offsetY - 25) + 'px';
+                
+                gridLines.appendChild(line);
+                gridLines.appendChild(number);
+            }
+            
+            // Obtenir les infos sur les lignes
+            const rowGap = parseFloat(getComputedStyle(gridTemplateDemo).rowGap);
+            const rowCount = Math.ceil(gridTemplateDemo.children.length / columnCount);
+            
+            // Créer les lignes horizontales
+            for (let i = 0; i <= rowCount; i++) {
+                const rowHeight = gridTemplateDemo.children[i * columnCount] ? 
+                    gridTemplateDemo.children[i * columnCount].offsetHeight : 0;
+                const rowPosition = i === 0 ? 0 : Array.from(gridTemplateDemo.children)
+                    .filter((_, index) => Math.floor(index / columnCount) < i)
+                    .reduce((pos, child, index) => {
+                        if (index % columnCount === 0) return pos + child.offsetHeight;
+                        return pos;
+                    }, 0) + (i * rowGap);
+                
+                const line = document.createElement('div');
+                line.className = 'grid-line grid-line-horizontal';
+                line.style.top = (offsetY + rowPosition) + 'px';
+                
+                const number = document.createElement('div');
+                number.className = 'grid-line-number';
+                number.textContent = i;
+                number.style.top = (offsetY + rowPosition - 10) + 'px';
+                number.style.left = (offsetX - 25) + 'px';
+                
+                gridLines.appendChild(line);
+                gridLines.appendChild(number);
+            }
+        }
+        
+        // Attacher les écouteurs d'événements pour la section 2
+        columnsInput.addEventListener('input', updateGridTemplate);
+        rowsInput.addEventListener('input', updateGridTemplate);
+        gapInput.addEventListener('input', updateGridTemplate);
+        itemCountGrid.addEventListener('input', function() {
+            updateGridItemCount();
+        });
+        
+        document.getElementById('show-grid-lines').addEventListener('click', function() {
+            if (gridLines.style.display === 'block') {
+                gridLines.style.display = 'none';
+                this.textContent = 'Afficher les lignes de grille';
+            } else {
+                gridLines.style.display = 'block';
+                this.textContent = 'Masquer les lignes de grille';
+                updateGridLines();
+            }
+        });
+        
+        document.getElementById('reset-grid').addEventListener('click', function() {
+            columnsInput.value = 'repeat(3, 1fr)';
+            rowsInput.value = 'repeat(3, 100px)';
+            gapInput.value = '10px';
+            itemCountGrid.value = 9;
+            updateGridItemCount();
+            updateGridTemplate();
+        });
+        
+        // Section 3: Placement des éléments
+        const gridPlacementDemo = document.getElementById('grid-placement-demo');
+        const gridPlacementCss = document.getElementById('grid-placement-css');
+        
+        function resetGridPlacement() {
+            const items = gridPlacementDemo.querySelectorAll('.grid-item');
+            items.forEach(item => {
+                item.style.gridColumn = '';
+                item.style.gridRow = '';
+            });
+            
+            gridPlacementCss.textContent = '/* Cliquez sur les exemples ci-dessus pour voir différentes façons de positionner les éléments */';
+        }
+        
+        document.getElementById('demo-placement-1').addEventListener('click', function() {
+            resetGridPlacement();
+            
+            const items = gridPlacementDemo.querySelectorAll('.grid-item');
+            
+            // Élément étendu
+            items[0].style.gridColumn = '1 / 3';
+            items[0].style.gridRow = '1 / 3';
+            
+            gridPlacementCss.textContent = `/* Élément étendu */
+.item:nth-child(1) {
+  grid-column: 1 / 3;  /* De la ligne de colonne 1 à 3 (occupe 2 colonnes) */
+  grid-row: 1 / 3;     /* De la ligne de rangée 1 à 3 (occupe 2 rangées) */
+}`;
+        });
+        
+        document.getElementById('demo-placement-2').addEventListener('click', function() {
+            resetGridPlacement();
+            
+            const items = gridPlacementDemo.querySelectorAll('.grid-item');
+            
+            // Positionnement précis
+            items[0].style.gridColumn = '1 / 3';
+            items[0].style.gridRow = '1 / 2';
+            
+            items[1].style.gridColumn = '3 / 5';
+            items[1].style.gridRow = '1 / 2';
+            
+            items[2].style.gridColumn = '1 / 2';
+            items[2].style.gridRow = '2 / 4';
+            
+            items[3].style.gridColumn = '2 / 4';
+            items[3].style.gridRow = '2 / 3';
+            
+            items[4].style.gridColumn = '4 / 5';
+            items[4].style.gridRow = '2 / 4';
+            
+            items[5].style.gridColumn = '2 / 4';
+            items[5].style.gridRow = '3 / 4';
+            
+            // Masquer les éléments inutilisés
+            for (let i = 6; i < items.length; i++) {
+                items[i].style.display = 'none';
+            }
+            
+            gridPlacementCss.textContent = `/* Positionnement précis */
+.item:nth-child(1) {
+  grid-column: 1 / 3;  /* Colonnes 1 à 2 */
+  grid-row: 1 / 2;     /* Première rangée */
+}
+.item:nth-child(2) {
+  grid-column: 3 / 5;  /* Colonnes 3 à 4 */
+  grid-row: 1 / 2;     /* Première rangée */
+}
+.item:nth-child(3) {
+  grid-column: 1 / 2;  /* Première colonne */
+  grid-row: 2 / 4;     /* Rangées 2 à 3 */
+}
+/* ... et ainsi de suite */`;
+        });
+        
+        document.getElementById('demo-placement-3').addEventListener('click', function() {
+            resetGridPlacement();
+            
+            const items = gridPlacementDemo.querySelectorAll('.grid-item');
+            
+            // Layout complexe
+            items[0].style.gridColumn = '1 / 5';
+            items[0].style.gridRow = '1 / 2';
+            
+            items[1].style.gridColumn = '1 / 2';
+            items[1].style.gridRow = '2 / 4';
+            
+            items[2].style.gridColumn = '2 / 4';
+            items[2].style.gridRow = '2 / 3';
+            
+            items[3].style.gridColumn = '4 / 5';
+            items[3].style.gridRow = '2 / 3';
+            
+            items[4].style.gridColumn = '2 / 3';
+            items[4].style.gridRow = '3 / 4';
+            
+            items[5].style.gridColumn = '3 / 5';
+            items[5].style.gridRow = '3 / 4';
+            
+            // Masquer les éléments inutilisés
+            for (let i = 6; i < items.length; i++) {
+                items[i].style.display = 'none';
+            }
+            
+            gridPlacementCss.textContent = `/* Layout complexe */
+.header {
+  grid-column: 1 / 5;  /* Toute la largeur */
+  grid-row: 1 / 2;     /* Première rangée */
+}
+.sidebar {
+  grid-column: 1 / 2;  /* Première colonne */
+  grid-row: 2 / 4;     /* Rangées 2 à 3 */
+}
+.main-content {
+  grid-column: 2 / 4;  /* Colonnes 2 à 3 */
+  grid-row: 2 / 3;     /* Deuxième rangée */
+}
+/* ... et ainsi de suite */`;
+        });
+        
+        document.getElementById('reset-placement').addEventListener('click', function() {
+            resetGridPlacement();
+            
+            // Réafficher tous les éléments
+            const items = gridPlacementDemo.querySelectorAll('.grid-item');
+            items.forEach(item => {
+                item.style.display = '';
+            });
+        });
+        
+        // Section 4: Grid Areas
+        const gridAreasDemo = document.getElementById('grid-areas-demo');
+        const gridAreasCss = document.getElementById('grid-areas-css');
+        
+        document.getElementById('layout-desktop').addEventListener('click', function() {
+            // Layout Desktop
+            gridAreasDemo.style.gridTemplateAreas = '"header header header" "sidebar content content" "footer footer footer"';
+            gridAreasDemo.style.gridTemplateColumns = '1fr 3fr 1fr';
+            gridAreasDemo.style.gridTemplateRows = 'auto 1fr auto';
+            
+            // Placer les éléments
+            const header = gridAreasDemo.querySelector('.header-area');
+            const sidebar = gridAreasDemo.querySelector('.sidebar-area');
+            const content = gridAreasDemo.querySelector('.content-area');
+            const footer = gridAreasDemo.querySelector('.footer-area');
+            
+            header.style.gridArea = 'header';
+            sidebar.style.gridArea = 'sidebar';
+            content.style.gridArea = 'content';
+            footer.style.gridArea = 'footer';
+            
+            // Mettre à jour le CSS affiché
+            gridAreasCss.textContent = `display: grid;
+grid-template-areas:
+  "header header header"
+  "sidebar content content"
+  "footer footer footer";
+grid-template-columns: 1fr 3fr 1fr;
+grid-template-rows: auto 1fr auto;
+gap: 10px;`;
+        });
+        
+        document.getElementById('layout-tablet').addEventListener('click', function() {
+            // Layout Tablet
+            gridAreasDemo.style.gridTemplateAreas = '"header header" "sidebar content" "footer footer"';
+            gridAreasDemo.style.gridTemplateColumns = '1fr 2fr';
+            gridAreasDemo.style.gridTemplateRows = 'auto 1fr auto';
+            
+            // Placer les éléments
+            const header = gridAreasDemo.querySelector('.header-area');
+            const sidebar = gridAreasDemo.querySelector('.sidebar-area');
+            const content = gridAreasDemo.querySelector('.content-area');
+            const footer = gridAreasDemo.querySelector('.footer-area');
+            
+            header.style.gridArea = 'header';
+            sidebar.style.gridArea = 'sidebar';
+            content.style.gridArea = 'content';
+            footer.style.gridArea = 'footer';
+            
+            // Mettre à jour le CSS affiché
+            gridAreasCss.textContent = `display: grid;
+grid-template-areas:
+  "header header"
+  "sidebar content"
+  "footer footer";
+grid-template-columns: 1fr 2fr;
+grid-template-rows: auto 1fr auto;
+gap: 10px;`;
+        });
+        
+        document.getElementById('layout-mobile').addEventListener('click', function() {
+            // Layout Mobile
+            gridAreasDemo.style.gridTemplateAreas = '"header" "content" "sidebar" "footer"';
+            gridAreasDemo.style.gridTemplateColumns = '1fr';
+            gridAreasDemo.style.gridTemplateRows = 'auto auto auto auto';
+            
+            // Placer les éléments
+            const header = gridAreasDemo.querySelector('.header-area');
+            const sidebar = gridAreasDemo.querySelector('.sidebar-area');
+            const content = gridAreasDemo.querySelector('.content-area');
+            const footer = gridAreasDemo.querySelector('.footer-area');
+            
+            header.style.gridArea = 'header';
+            sidebar.style.gridArea = 'sidebar';
+            content.style.gridArea = 'content';
+            footer.style.gridArea = 'footer';
+            
+            // Mettre à jour le CSS affiché
+            gridAreasCss.textContent = `display: grid;
+grid-template-areas:
+  "header"
+  "content"
+  "sidebar"
+  "footer";
+grid-template-columns: 1fr;
+grid-template-rows: auto auto auto auto;
+gap: 10px;`;
+        });
+        
+        // Section 5: Alignement et justification
+        const gridAlignmentDemo = document.getElementById('grid-alignment-demo');
+        const gridAlignmentCss = document.getElementById('grid-alignment-css');
+        const justifyItemsSelect = document.getElementById('justify-items');
+        const alignItemsSelect = document.getElementById('align-items');
+        const justifyContentSelect = document.getElementById('justify-content');
+        const alignContentSelect = document.getElementById('align-content');
+        
+        function updateGridAlignment() {
+            const justifyItems = justifyItemsSelect.value;
+            const alignItems = alignItemsSelect.value;
+            const justifyContent = justifyContentSelect.value;
+            const alignContent = alignContentSelect.value;
+            
+            gridAlignmentDemo.style.justifyItems = justifyItems;
+            gridAlignmentDemo.style.alignItems = alignItems;
+            gridAlignmentDemo.style.justifyContent = justifyContent;
+            gridAlignmentDemo.style.alignContent = alignContent;
+            
+            // Mettre à jour le CSS affiché
+            gridAlignmentCss.textContent = `display: grid;
+grid-template-columns: repeat(3, 100px);
+grid-template-rows: repeat(3, 100px);
+gap: 10px;
+justify-items: ${justifyItems};
+align-items: ${alignItems};
+justify-content: ${justifyContent};
+align-content: ${alignContent};`;
+        }
+        
+        // Attacher les écouteurs d'événements pour la section 5
+        justifyItemsSelect.addEventListener('change', updateGridAlignment);
+        alignItemsSelect.addEventListener('change', updateGridAlignment);
+        justifyContentSelect.addEventListener('change', updateGridAlignment);
+        alignContentSelect.addEventListener('change', updateGridAlignment);
+        
+        document.getElementById('reset-alignment').addEventListener('click', function() {
+            justifyItemsSelect.value = 'stretch';
+            alignItemsSelect.value = 'stretch';
+            justifyContentSelect.value = 'start';
+            alignContentSelect.value = 'start';
+            updateGridAlignment();
+        });
+        
+        // Section 6: Exemples pratiques
+        document.getElementById('toggle-layout').addEventListener('click', function() {
+            const websiteLayout = document.querySelector('.website-layout');
+            
+            if (websiteLayout.style.gridTemplateAreas) {
+                // Revenir au layout initial
+                websiteLayout.style.gridTemplateAreas = '';
+                websiteLayout.style.gridTemplateColumns = '';
+                this.textContent = 'Basculer vers layout mobile';
+            } else {
+                // Appliquer le layout mobile
+                websiteLayout.style.gridTemplateAreas = '"header" "nav" "content" "sidebar" "footer"';
+                websiteLayout.style.gridTemplateColumns = '1fr';
+                this.textContent = 'Basculer vers layout desktop';
+            }
+        });
+        
+        // Initialiser les démos
+        updateGridItemCount();
+        updateGridTemplate();
+        document.getElementById('layout-desktop').click();
+        updateGridAlignment();
+    </script>
+
+
+</body></html>

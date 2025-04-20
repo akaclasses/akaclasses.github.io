@@ -1,0 +1,285 @@
+<!DOCTYPE html><html lang="fr"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Techniques de mise en page CSS - Démonstrations</title>
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            font-weight: normal;
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+            opacity: 0.8;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .intro {
+            margin-bottom: 3rem;
+            text-align: center;
+            padding: 0 1rem;
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .demo-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .demo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .demo-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .demo-number {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            line-height: 36px;
+            text-align: center;
+            background-color: #2c3e50;
+            color: white;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+        
+        .demo-title {
+            font-size: 1.4rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .demo-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .demo-description {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .tag-box-model {
+            background-color: #e9f5ff;
+            color: #0072c6;
+        }
+        
+        .tag-position {
+            background-color: #fff4e5;
+            color: #ff9800;
+        }
+        
+        .tag-flexbox {
+            background-color: #e5f8ee;
+            color: #28a745;
+        }
+        
+        .tag-grid {
+            background-color: #f5e9ff;
+            color: #6f42c1;
+        }
+        
+        .tag-all {
+            background-color: #ffe5e5;
+            color: #e91e63;
+        }
+        
+        .demo-button {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .demo-button:hover {
+            background-color: #2980b9;
+        }
+        
+        footer {
+            background-color: #34495e;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-text {
+            margin: 0;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Techniques de mise en page CSS</h1>
+        <p class="subtitle">Démonstrations interactives des concepts fondamentaux</p>
+    </header>
+    
+    <div class="container">
+        <div class="intro">
+            <p>Bienvenue dans cette collection de démonstrations interactives des principales techniques de mise en page CSS. Chaque démo vous permet d'explorer et de comprendre un concept spécifique à travers des exemples visuels et interactifs.</p>
+            <p>Sélectionnez une démo ci-dessous pour commencer votre exploration.</p>
+        </div>
+        
+        <div class="demo-grid">
+            <!-- Exemple 1: Box Model -->
+            <div class="demo-card">
+                <div class="demo-header">
+                    <h2 class="demo-title">
+                        <span class="demo-number">1</span>
+                        Box Model
+                    </h2>
+                </div>
+                <div class="demo-content">
+                    <p class="demo-description">
+                        Explorez le modèle de boîte CSS et découvrez comment les propriétés content, padding, border et margin interagissent. Comprenez également les différences entre box-sizing: content-box et border-box.
+                    </p>
+                    <a href="box-model.html" class="demo-button">Voir la démo</a>
+                </div>
+            </div>
+            
+            <!-- Exemple 2: Positioning -->
+            <div class="demo-card">
+                <div class="demo-header">
+                    <h2 class="demo-title">
+                        <span class="demo-number">2</span>
+                        Positionnement
+                    </h2>
+                </div>
+                <div class="demo-content">
+                    <p class="demo-description">
+                        Découvrez les différentes méthodes de positionnement en CSS: static, relative, absolute, fixed, sticky, ainsi que l'utilisation du z-index pour contrôler l'empilement des éléments.
+                    </p>
+                    <a href="css-positioning.html" class="demo-button">Voir la démo</a>
+                </div>
+            </div>
+            
+            <!-- Exemple 3: Flexbox -->
+            <div class="demo-card">
+                <div class="demo-header">
+                    <h2 class="demo-title">
+                        <span class="demo-number">3</span>
+                        Flexbox
+                    </h2>
+                </div>
+                <div class="demo-content">
+                    <p class="demo-description">
+                        Apprenez à utiliser Flexbox, un modèle de mise en page unidimensionnel permettant d'organiser facilement des éléments en ligne ou en colonne, avec des contrôles puissants d'alignement et de distribution.
+                    </p>
+                    <a href="flexbox.html" class="demo-button">Voir la démo</a>
+                </div>
+            </div>
+            
+            <!-- Exemple 4: Grid -->
+            <div class="demo-card">
+                <div class="demo-header">
+                    <h2 class="demo-title">
+                        <span class="demo-number">4</span>
+                        CSS Grid
+                    </h2>
+                </div>
+                <div class="demo-content">
+                    <p class="demo-description">
+                        Explorez CSS Grid, un système de mise en page bidimensionnel qui permet de créer des designs complexes en divisant l'espace en lignes et colonnes, avec un contrôle précis sur le placement des éléments.
+                    </p>
+                    <a href="css-grid.html" class="demo-button">Voir la démo</a>
+                </div>
+            </div>
+            
+            <!-- Exemple 5: Combinaison de toutes les techniques -->
+            <div class="demo-card">
+                <div class="demo-header">
+                    <h2 class="demo-title">
+                        <span class="demo-number">5</span>
+                        Combinaison des techniques
+                    </h2>
+                </div>
+                <div class="demo-content">
+                    <p class="demo-description">
+                        Voyez comment toutes ces techniques peuvent être combinées harmonieusement pour créer des mises en page modernes et complexes. Cette démo montre où et pourquoi utiliser chaque technique.
+                    </p>
+                    <div>
+                        <span class="tag tag-box-model">Box Model</span>
+                        <span class="tag tag-position">Position</span>
+                        <span class="tag tag-flexbox">Flexbox</span>
+                        <span class="tag tag-grid">Grid</span>
+                    </div>
+                    <a href="css-all.html" class="demo-button">Voir la démo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p class="footer-text">Démos créées pour illustrer les techniques modernes de mise en page CSS</p>
+    </footer>
+
+
+</body></html>

@@ -1,0 +1,807 @@
+<!DOCTYPE html><html lang="fr"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexbox - Système de mise en page CSS</title>
+    <style>
+        /* Styles généraux */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+        
+        h2 {
+            color: #2980b9;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        
+        h3 {
+            color: #16a085;
+            margin-top: 25px;
+        }
+        
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .description {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: Consolas, Monaco, 'Andale Mono', monospace;
+        }
+        
+        .control-panel {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .controls-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .control-item {
+            margin-bottom: 10px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        select {
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background-color: white;
+            width: 180px;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Démo Flexbox */
+        .flex-demo {
+            margin: 20px 0;
+            border: 2px dashed #ccc;
+            padding: 10px;
+            min-height: 200px;
+            position: relative;
+        }
+        
+        .flex-container {
+            display: flex;
+            min-height: 200px;
+            background-color: #ecf0f1;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .flex-item {
+            background-color: #3498db;
+            color: white;
+            padding: 15px;
+            margin: 5px;
+            text-align: center;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        /* Couleurs alternées pour les flex items */
+        .flex-item:nth-child(2n) {
+            background-color: #e74c3c;
+        }
+        
+        .flex-item:nth-child(3n) {
+            background-color: #2ecc71;
+        }
+        
+        /* Démo des propriétés flex-items */
+        .flex-items-container {
+            display: flex;
+            min-height: 200px;
+            background-color: #ecf0f1;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        
+        .flex-items-demo .flex-item {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .flex-items-demo .flex-item::after {
+            content: attr(data-props);
+            font-size: 12px;
+            margin-top: 5px;
+            opacity: 0.8;
+        }
+        
+        /* Exemples pratiques */
+        .practical-example {
+            margin: 30px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .practical-header {
+            background-color: #3498db;
+            color: white;
+            padding: 15px;
+        }
+        
+        .practical-content {
+            padding: 15px;
+        }
+        
+        /* Exemple navigation */
+        .nav-example {
+            display: flex;
+            background-color: #34495e;
+            color: white;
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+        }
+        
+        .nav-example li {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .nav-example li:hover {
+            background-color: #2c3e50;
+        }
+        
+        /* Exemple carte */
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .card {
+            flex: 0 0 250px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-img {
+            height: 150px;
+            background-color: #bdc3c7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7f8c8d;
+        }
+        
+        .card-content {
+            padding: 15px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-title {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        
+        .card-text {
+            flex: 1;
+        }
+        
+        .card-button {
+            align-self: flex-start;
+            margin-top: 10px;
+        }
+        
+        /* Annotations */
+        .annotation {
+            position: absolute;
+            background-color: rgba(255,255,255,0.9);
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            max-width: 250px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .controls-group {
+                flex-direction: column;
+            }
+            
+            .card {
+                flex: 0 0 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>💪 Flexbox - Système de mise en page CSS</h1>
+
+    <div class="description">
+        <p>Flexbox est un modèle de mise en page unidimensionnel qui permet de disposer facilement des éléments en ligne ou en colonne, et de contrôler leur alignement, leur ordre et leur taille. Cette page démontre les principales fonctionnalités de Flexbox de manière interactive.</p>
+    </div>
+    
+    <!-- Section 1: Introduction à Flexbox -->
+    <h2>1. Qu'est-ce que Flexbox? 🧩</h2>
+    <div class="section">
+        <p>Flexbox (Flexible Box Layout) est un modèle de mise en page <strong>unidimensionnel</strong> conçu pour organiser des éléments soit en ligne, soit en colonne.</p>
+        
+        <h3>Concepts clés:</h3>
+        <ul>
+            <li><strong>Conteneur flex</strong> (flex container): l'élément parent avec <code>display: flex</code></li>
+            <li><strong>Éléments flex</strong> (flex items): les enfants directs du conteneur flex</li>
+            <li><strong>Axe principal</strong> (main axis): l'axe défini par <code>flex-direction</code> (horizontal ou vertical)</li>
+            <li><strong>Axe secondaire</strong> (cross axis): l'axe perpendiculaire à l'axe principal</li>
+        </ul>
+        
+        <div class="flex-demo">
+            <div id="intro-flex-container" class="flex-container">
+                <div class="flex-item">1</div>
+                <div class="flex-item">2</div>
+                <div class="flex-item">3</div>
+                <div class="flex-item">4</div>
+            </div>
+            
+            <div class="annotation" style="top: 30px; right: 20px;">
+                ↑ Un conteneur flex basique avec 4 éléments flex.<br>
+                Par défaut, les éléments s'alignent en ligne (row).
+            </div>
+        </div>
+        
+        <pre>/* CSS de base pour créer un conteneur flex */
+.container {
+  display: flex;
+}</pre>
+    </div>
+    
+    <!-- Section 2: Propriétés du conteneur flex -->
+    <h2>2. Propriétés du conteneur flex 📦</h2>
+    <div class="section">
+        <p>Ces propriétés sont appliquées au conteneur parent et affectent la disposition de tous les éléments flex enfants.</p>
+        
+        <div class="control-panel">
+            <div class="controls-group">
+                <div class="control-item">
+                    <label for="flex-direction">flex-direction:</label>
+                    <select id="flex-direction">
+                        <option value="row">row</option>
+                        <option value="row-reverse">row-reverse</option>
+                        <option value="column">column</option>
+                        <option value="column-reverse">column-reverse</option>
+                    </select>
+                </div>
+                
+                <div class="control-item">
+                    <label for="flex-wrap">flex-wrap:</label>
+                    <select id="flex-wrap">
+                        <option value="nowrap">nowrap</option>
+                        <option value="wrap">wrap</option>
+                        <option value="wrap-reverse">wrap-reverse</option>
+                    </select>
+                </div>
+                
+                <div class="control-item">
+                    <label for="justify-content">justify-content:</label>
+                    <select id="justify-content">
+                        <option value="flex-start">flex-start</option>
+                        <option value="flex-end">flex-end</option>
+                        <option value="center">center</option>
+                        <option value="space-between">space-between</option>
+                        <option value="space-around">space-around</option>
+                        <option value="space-evenly">space-evenly</option>
+                    </select>
+                </div>
+                
+                <div class="control-item">
+                    <label for="align-items">align-items:</label>
+                    <select id="align-items">
+                        <option value="stretch">stretch</option>
+                        <option value="flex-start">flex-start</option>
+                        <option value="flex-end">flex-end</option>
+                        <option value="center">center</option>
+                        <option value="baseline">baseline</option>
+                    </select>
+                </div>
+                
+                <div class="control-item">
+                    <label for="align-content">align-content:</label>
+                    <select id="align-content">
+                        <option value="stretch">stretch</option>
+                        <option value="flex-start">flex-start</option>
+                        <option value="flex-end">flex-end</option>
+                        <option value="center">center</option>
+                        <option value="space-between">space-between</option>
+                        <option value="space-around">space-around</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="control-item">
+                <label for="item-count">Nombre d'éléments:</label>
+                <input type="range" id="item-count" min="1" max="12" value="4">
+                <span id="item-count-value">4</span> éléments
+            </div>
+            
+            <button id="reset-container">Réinitialiser</button>
+        </div>
+        
+        <div class="flex-demo">
+            <div id="container-demo" class="flex-container">
+                <div class="flex-item">1</div>
+                <div class="flex-item">2</div>
+                <div class="flex-item">3</div>
+                <div class="flex-item">4</div>
+            </div>
+            
+            <pre id="container-css">display: flex;
+flex-direction: row;
+flex-wrap: nowrap;
+justify-content: flex-start;
+align-items: stretch;
+align-content: stretch;</pre>
+        </div>
+        
+        <h3>Explications des propriétés:</h3>
+        <ul>
+            <li><strong>flex-direction</strong>: définit l'axe principal (horizontalement ou verticalement)</li>
+            <li><strong>flex-wrap</strong>: contrôle si les éléments peuvent passer à la ligne</li>
+            <li><strong>justify-content</strong>: aligne les éléments le long de l'axe principal</li>
+            <li><strong>align-items</strong>: aligne les éléments le long de l'axe secondaire</li>
+            <li><strong>align-content</strong>: distribue l'espace entre les lignes (quand il y a wrap)</li>
+            <li><strong>flex-flow</strong>: raccourci pour flex-direction et flex-wrap</li>
+        </ul>
+    </div>
+    
+    <!-- Section 3: Propriétés des éléments flex -->
+    <h2>3. Propriétés des éléments flex 🧩</h2>
+    <div class="section">
+        <p>Ces propriétés sont appliquées aux éléments enfants individuels à l'intérieur du conteneur flex.</p>
+        
+        <div class="control-panel">
+            <div class="control-item">
+                <label>Configuration des éléments:</label>
+                <button id="demo-grow">flex-grow</button>
+                <button id="demo-shrink">flex-shrink</button>
+                <button id="demo-basis">flex-basis</button>
+                <button id="demo-order">order</button>
+                <button id="demo-align-self">align-self</button>
+                <button id="reset-items">Réinitialiser</button>
+            </div>
+        </div>
+        
+        <div class="flex-demo flex-items-demo">
+            <div id="items-container" class="flex-items-container">
+                <div class="flex-item" data-props="défaut">1</div>
+                <div class="flex-item" data-props="défaut">2</div>
+                <div class="flex-item" data-props="défaut">3</div>
+                <div class="flex-item" data-props="défaut">4</div>
+            </div>
+            
+            <pre id="items-css"></pre>
+        </div>
+        
+        <h3>Explications des propriétés:</h3>
+        <ul>
+            <li><strong>flex-grow</strong>: facteur de croissance - comment l'élément grossit par rapport aux autres</li>
+            <li><strong>flex-shrink</strong>: facteur de rétrécissement - comment l'élément rétrécit par rapport aux autres</li>
+            <li><strong>flex-basis</strong>: taille de base d'un élément avant distribution de l'espace</li>
+            <li><strong>flex</strong>: raccourci pour flex-grow, flex-shrink et flex-basis</li>
+            <li><strong>order</strong>: contrôle l'ordre des éléments, indépendamment de l'ordre HTML</li>
+            <li><strong>align-self</strong>: remplace align-items pour un élément spécifique</li>
+        </ul>
+    </div>
+    
+    <!-- Section 4: Exemples pratiques -->
+    <h2>4. Exemples pratiques 🛠️</h2>
+    <div class="section">
+        <h3>Navigation responsive</h3>
+        <div class="practical-example">
+            <ul class="nav-example">
+                <li>Accueil</li>
+                <li>Produits</li>
+                <li>Services</li>
+                <li>Blog</li>
+                <li>Contact</li>
+            </ul>
+            
+            <div class="practical-content">
+                <p>Une navigation simple avec Flexbox. Les éléments se répartissent automatiquement sur la largeur disponible.</p>
+                <pre>/* CSS pour la navigation */
+.nav {
+  display: flex;
+  background-color: #34495e;
+  color: white;
+}
+
+.nav li {
+  padding: 15px 20px;
+}</pre>
+                <button id="toggle-nav">Passer en colonne</button>
+            </div>
+        </div>
+        
+        <h3>Cards avec hauteur égale</h3>
+        <div class="practical-example">
+            <div class="practical-content">
+                <p>Des cartes qui conservent la même hauteur, malgré des contenus de taille différente.</p>
+                <div class="card-container">
+                    <div class="card">
+                        <div class="card-img">Image</div>
+                        <div class="card-content">
+                            <h4 class="card-title">Carte 1</h4>
+                            <p class="card-text">Contenu court.</p>
+                            <button class="card-button">Voir plus</button>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-img">Image</div>
+                        <div class="card-content">
+                            <h4 class="card-title">Carte 2</h4>
+                            <p class="card-text">Contenu plus long qui s'étend sur plusieurs lignes pour démontrer l'alignement flexible.</p>
+                            <button class="card-button">Voir plus</button>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-img">Image</div>
+                        <div class="card-content">
+                            <h4 class="card-title">Carte 3</h4>
+                            <p class="card-text">Un contenu de taille moyenne.</p>
+                            <button class="card-button">Voir plus</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <pre>/* CSS pour les cartes */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.card {
+  flex: 0 0 250px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-content {
+  flex: 1; /* Prend tout l'espace disponible */
+  display: flex;
+  flex-direction: column;
+}
+
+.card-text {
+  flex: 1; /* Pousse le bouton vers le bas */
+}
+
+.card-button {
+  align-self: flex-start; /* Aligne le bouton à gauche */
+}</pre>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Section 5: Conclusion et astuces -->
+    <h2>5. Astuces et bonnes pratiques 💡</h2>
+    <div class="section">
+        <ul>
+            <li><strong>Mobile-first</strong>: commencez avec une disposition en colonne (flex-direction: column) pour mobile, puis passez en ligne pour les écrans plus grands</li>
+            <li><strong>flex: 1</strong>: raccourci pour flex: 1 1 0% - utile pour répartir l'espace également</li>
+            <li><strong>flex-basis vs width/height</strong>: préférez flex-basis qui s'adapte à flex-direction</li>
+            <li><strong>Centrage parfait</strong>: combinaison de justify-content: center et align-items: center</li>
+            <li><strong>Compatibilité</strong>: Flexbox est supporté par tous les navigateurs modernes, mais vérifiez pour IE11</li>
+            <li><strong>Nesting</strong>: n'hésitez pas à imbriquer des conteneurs flex pour des mises en page complexes</li>
+        </ul>
+        
+        <div class="description">
+            <p><strong>Quand utiliser Flexbox?</strong></p>
+            <ul>
+                <li>Pour des mises en page unidimensionnelles (ligne OU colonne)</li>
+                <li>Pour l'alignement vertical, qui était difficile avant Flexbox</li>
+                <li>Pour des barres de navigation, des en-têtes, des footers</li>
+                <li>Pour des listes de cartes ou d'éléments avec hauteur égale</li>
+                <li>Pour des composants d'interface simples</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Section 2: Propriétés du conteneur flex
+        const containerDemo = document.getElementById('container-demo');
+        const containerCss = document.getElementById('container-css');
+        const directionSelect = document.getElementById('flex-direction');
+        const wrapSelect = document.getElementById('flex-wrap');
+        const justifySelect = document.getElementById('justify-content');
+        const alignItemsSelect = document.getElementById('align-items');
+        const alignContentSelect = document.getElementById('align-content');
+        const itemCountInput = document.getElementById('item-count');
+        const itemCountValue = document.getElementById('item-count-value');
+        
+        function updateContainerDemo() {
+            const direction = directionSelect.value;
+            const wrap = wrapSelect.value;
+            const justify = justifySelect.value;
+            const alignItems = alignItemsSelect.value;
+            const alignContent = alignContentSelect.value;
+            
+            containerDemo.style.flexDirection = direction;
+            containerDemo.style.flexWrap = wrap;
+            containerDemo.style.justifyContent = justify;
+            containerDemo.style.alignItems = alignItems;
+            containerDemo.style.alignContent = alignContent;
+            
+            // Mettre à jour le CSS affiché
+            containerCss.textContent = `display: flex;
+flex-direction: ${direction};
+flex-wrap: ${wrap};
+justify-content: ${justify};
+align-items: ${alignItems};
+align-content: ${alignContent};`;
+        }
+        
+        function updateItemCount() {
+            const count = parseInt(itemCountInput.value);
+            itemCountValue.textContent = count;
+            
+            // Supprimer tous les éléments existants
+            while (containerDemo.firstChild) {
+                containerDemo.removeChild(containerDemo.firstChild);
+            }
+            
+            // Créer les nouveaux éléments
+            for (let i = 1; i <= count; i++) {
+                const item = document.createElement('div');
+                item.className = 'flex-item';
+                item.textContent = i;
+                containerDemo.appendChild(item);
+            }
+        }
+        
+        // Attacher les écouteurs d'événements
+        directionSelect.addEventListener('change', updateContainerDemo);
+        wrapSelect.addEventListener('change', updateContainerDemo);
+        justifySelect.addEventListener('change', updateContainerDemo);
+        alignItemsSelect.addEventListener('change', updateContainerDemo);
+        alignContentSelect.addEventListener('change', updateContainerDemo);
+        itemCountInput.addEventListener('input', function() {
+            updateItemCount();
+            updateContainerDemo();
+        });
+        
+        document.getElementById('reset-container').addEventListener('click', function() {
+            directionSelect.value = 'row';
+            wrapSelect.value = 'nowrap';
+            justifySelect.value = 'flex-start';
+            alignItemsSelect.value = 'stretch';
+            alignContentSelect.value = 'stretch';
+            itemCountInput.value = 4;
+            updateItemCount();
+            updateContainerDemo();
+        });
+        
+        // Section 3: Propriétés des éléments flex
+        const itemsContainer = document.getElementById('items-container');
+        const itemsCss = document.getElementById('items-css');
+        
+        function resetItemsDemo() {
+            // Réinitialiser tous les éléments
+            const items = itemsContainer.querySelectorAll('.flex-item');
+            items.forEach(item => {
+                item.style.flexGrow = '';
+                item.style.flexShrink = '';
+                item.style.flexBasis = '';
+                item.style.order = '';
+                item.style.alignSelf = '';
+                item.dataset.props = 'défaut';
+            });
+            itemsCss.textContent = '';
+        }
+        
+        document.getElementById('demo-grow').addEventListener('click', function() {
+            resetItemsDemo();
+            const items = itemsContainer.querySelectorAll('.flex-item');
+            
+            items[0].style.flexGrow = '1';
+            items[0].dataset.props = 'flex-grow: 1';
+            
+            items[1].style.flexGrow = '2';
+            items[1].dataset.props = 'flex-grow: 2';
+            
+            items[2].style.flexGrow = '1';
+            items[2].dataset.props = 'flex-grow: 1';
+            
+            items[3].style.flexGrow = '0';
+            items[3].dataset.props = 'flex-grow: 0';
+            
+            itemsCss.textContent = `.item:nth-child(1) { flex-grow: 1; } /* Grandit 1x */
+.item:nth-child(2) { flex-grow: 2; } /* Grandit 2x */
+.item:nth-child(3) { flex-grow: 1; } /* Grandit 1x */
+.item:nth-child(4) { flex-grow: 0; } /* Ne grandit pas */`;
+        });
+        
+        document.getElementById('demo-shrink').addEventListener('click', function() {
+            resetItemsDemo();
+            const items = itemsContainer.querySelectorAll('.flex-item');
+            
+            items[0].style.flexBasis = '200px';
+            items[0].style.flexShrink = '1';
+            items[0].dataset.props = 'flex-basis: 200px; flex-shrink: 1';
+            
+            items[1].style.flexBasis = '200px';
+            items[1].style.flexShrink = '2';
+            items[1].dataset.props = 'flex-basis: 200px; flex-shrink: 2';
+            
+            items[2].style.flexBasis = '200px';
+            items[2].style.flexShrink = '3';
+            items[2].dataset.props = 'flex-basis: 200px; flex-shrink: 3';
+            
+            items[3].style.flexBasis = '200px';
+            items[3].style.flexShrink = '0';
+            items[3].dataset.props = 'flex-basis: 200px; flex-shrink: 0';
+            
+            itemsCss.textContent = `.item { flex-basis: 200px; } /* Taille de base */
+.item:nth-child(1) { flex-shrink: 1; } /* Rétrécit 1x */
+.item:nth-child(2) { flex-shrink: 2; } /* Rétrécit 2x */
+.item:nth-child(3) { flex-shrink: 3; } /* Rétrécit 3x */
+.item:nth-child(4) { flex-shrink: 0; } /* Ne rétrécit pas */`;
+        });
+        
+        document.getElementById('demo-basis').addEventListener('click', function() {
+            resetItemsDemo();
+            const items = itemsContainer.querySelectorAll('.flex-item');
+            
+            items[0].style.flexBasis = 'auto';
+            items[0].dataset.props = 'flex-basis: auto';
+            
+            items[1].style.flexBasis = '100px';
+            items[1].dataset.props = 'flex-basis: 100px';
+            
+            items[2].style.flexBasis = '200px';
+            items[2].dataset.props = 'flex-basis: 200px';
+            
+            items[3].style.flexBasis = '50%';
+            items[3].dataset.props = 'flex-basis: 50%';
+            
+            itemsCss.textContent = `.item:nth-child(1) { flex-basis: auto; } /* Taille basée sur le contenu */
+.item:nth-child(2) { flex-basis: 100px; } /* Taille fixe de 100px */
+.item:nth-child(3) { flex-basis: 200px; } /* Taille fixe de 200px */
+.item:nth-child(4) { flex-basis: 50%; } /* 50% du conteneur */`;
+        });
+        
+        document.getElementById('demo-order').addEventListener('click', function() {
+            resetItemsDemo();
+            const items = itemsContainer.querySelectorAll('.flex-item');
+            
+            items[0].style.order = '3';
+            items[0].dataset.props = 'order: 3';
+            
+            items[1].style.order = '1';
+            items[1].dataset.props = 'order: 1';
+            
+            items[2].style.order = '4';
+            items[2].dataset.props = 'order: 4';
+            
+            items[3].style.order = '2';
+            items[3].dataset.props = 'order: 2';
+            
+            itemsCss.textContent = `.item:nth-child(1) { order: 3; } /* 3ème position */
+.item:nth-child(2) { order: 1; } /* 1ère position */
+.item:nth-child(3) { order: 4; } /* 4ème position */
+.item:nth-child(4) { order: 2; } /* 2ème position */`;
+        });
+        
+        document.getElementById('demo-align-self').addEventListener('click', function() {
+            resetItemsDemo();
+            const items = itemsContainer.querySelectorAll('.flex-item');
+            
+            // S'assurer que le conteneur a une hauteur suffisante
+            itemsContainer.style.minHeight = '200px';
+            
+            items[0].style.alignSelf = 'flex-start';
+            items[0].dataset.props = 'align-self: flex-start';
+            
+            items[1].style.alignSelf = 'center';
+            items[1].dataset.props = 'align-self: center';
+            
+            items[2].style.alignSelf = 'flex-end';
+            items[2].dataset.props = 'align-self: flex-end';
+            
+            items[3].style.alignSelf = 'stretch';
+            items[3].style.height = 'auto';
+            items[3].dataset.props = 'align-self: stretch';
+            
+            itemsCss.textContent = `.item:nth-child(1) { align-self: flex-start; } /* Aligné en haut */
+.item:nth-child(2) { align-self: center; } /* Aligné au centre */
+.item:nth-child(3) { align-self: flex-end; } /* Aligné en bas */
+.item:nth-child(4) { align-self: stretch; } /* Étiré sur toute la hauteur */`;
+        });
+        
+        document.getElementById('reset-items').addEventListener('click', resetItemsDemo);
+        
+        // Section 4: Exemples pratiques
+        document.getElementById('toggle-nav').addEventListener('click', function() {
+            const nav = document.querySelector('.nav-example');
+            if (nav.style.flexDirection === 'column') {
+                nav.style.flexDirection = 'row';
+                this.textContent = 'Passer en colonne';
+            } else {
+                nav.style.flexDirection = 'column';
+                this.textContent = 'Passer en ligne';
+            }
+        });
+        
+        // Initialiser les démos
+        updateContainerDemo();
+        updateItemCount();
+    </script>
+
+
+</body></html>
