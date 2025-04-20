@@ -1,0 +1,587 @@
+<!DOCTYPE html><html lang="fr"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Démonstration du Positionnement CSS</title>
+    <style>
+        /* Styles généraux */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+        
+        h2 {
+            color: #2980b9;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        
+        .container {
+            background-color: #f9f9f9;
+            border: 2px dashed #ccc;
+            padding: 15px;
+            margin: 30px 0;
+            position: relative;
+            min-height: 200px;
+        }
+        
+        .description {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .box {
+            width: 100px;
+            height: 100px;
+            color: white;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        
+        .control-panel {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        input[type="range"] {
+            width: 200px;
+        }
+        
+        /* Position: static */
+        .static-demo .box {
+            background-color: #3498db;
+            margin: 10px;
+            position: static;
+        }
+        
+        /* Position: relative */
+        .relative-demo .box-container {
+            margin: 20px;
+            border: 1px dotted #aaa;
+            height: 200px;
+            width: 500px;
+        }
+        
+        .relative-demo .original-position {
+            border: 2px dashed #e74c3c;
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .relative-demo .box {
+            background-color: #e74c3c;
+            position: relative;
+            top: 50px;
+            left: 50px;
+        }
+        
+        /* Position: absolute */
+        .absolute-demo .parent {
+            border: 2px solid #27ae60;
+            padding: 20px;
+            position: relative;
+            height: 300px;
+            margin-bottom: 20px;
+        }
+        
+        .absolute-demo .box {
+            background-color: #2ecc71;
+            position: absolute;
+            transition: all 0.5s ease;
+        }
+        
+        /* Position: fixed */
+        .fixed-demo .box {
+            background-color: #9b59b6;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .fixed-demo .remove-btn {
+            background-color: #e74c3c;
+            margin-top: 10px;
+        }
+        
+        /* Position: sticky */
+        .sticky-demo {
+            height: 300px;
+            overflow-y: auto;
+            border: 2px dashed #ccc;
+        }
+        
+        .sticky-demo .content {
+            height: 800px;
+            padding: 10px;
+            background: linear-gradient(to bottom, #f1f1f1, #ddd);
+        }
+        
+        .sticky-demo .box {
+            background-color: #f39c12;
+            position: sticky;
+            top: 10px;
+            margin: 0 auto 20px;
+        }
+        
+        /* z-index démo */
+        .z-index-demo {
+            height: 250px;
+        }
+        
+        .z-index-demo .box {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            transition: all 0.5s ease;
+        }
+        
+        .z-index-demo .box1 {
+            background-color: rgba(231, 76, 60, 0.8);
+            top: 40px;
+            left: 40px;
+        }
+        
+        .z-index-demo .box2 {
+            background-color: rgba(52, 152, 219, 0.8);
+            top: 80px;
+            left: 110px;
+        }
+        
+        .z-index-demo .box3 {
+            background-color: rgba(46, 204, 113, 0.8);
+            top: 120px;
+            left: 180px;
+        }
+        
+        /* Display démo */
+        .display-demo .element {
+            background-color: #3498db;
+            color: white;
+            padding: 10px;
+            margin: 5px;
+            width: 200px;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .display-demo .block {
+            display: block;
+        }
+        
+        .display-demo .inline {
+            display: inline;
+            background-color: #e74c3c;
+        }
+        
+        .display-demo .inline-block {
+            display: inline-block;
+            background-color: #2ecc71;
+        }
+        
+        .display-demo .none {
+            display: none;
+            background-color: #9b59b6;
+        }
+        
+        /* Annotation style */
+        .annotation {
+            position: absolute;
+            background-color: rgba(255,255,255,0.9);
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            max-width: 250px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <h1>📍 Démonstration du Positionnement CSS</h1>
+
+    <div class="description">
+        <p>Cette page démontre les différentes valeurs de la propriété <code>position</code> en CSS, l'utilisation du <code>z-index</code> et les principales valeurs de la propriété <code>display</code>. Explorez chaque section pour comprendre comment ces propriétés affectent le comportement et le positionnement des éléments.</p>
+    </div>
+    
+    <!-- Position: Static -->
+    <h2>1. Position: static (par défaut) 📌</h2>
+    <div class="description">
+        <p>Les éléments avec <code>position: static</code> suivent le flux normal du document. Les propriétés de positionnement (top, right, bottom, left) n'ont aucun effet sur ces éléments.</p>
+        <pre>position: static;</pre>
+    </div>
+    
+    <div class="container static-demo">
+        <div class="box">Je suis static</div>
+        <div class="box">Moi aussi</div>
+        <div class="box">Et moi</div>
+        
+        <div class="annotation" style="top: 50px; right: 30px;">
+            Ces éléments suivent le flux normal du document. <br>
+            Les coordonnées (top, left, etc.) n'ont aucun effet.
+        </div>
+    </div>
+    
+    <!-- Position: Relative -->
+    <h2>2. Position: relative 📏</h2>
+    <div class="description">
+        <p>Un élément avec <code>position: relative</code> est positionné par rapport à sa position normale dans le flux du document. Vous pouvez le déplacer avec les propriétés top, right, bottom et left.</p>
+        <pre>position: relative;
+top: 50px;
+left: 50px;</pre>
+    </div>
+    
+    <div class="control-panel">
+        <label for="relative-top">Top: <span id="relative-top-value">50</span>px</label>
+        <input type="range" id="relative-top" min="-50" max="100" value="50">
+        
+        <label for="relative-left">Left: <span id="relative-left-value">50</span>px</label>
+        <input type="range" id="relative-left" min="-50" max="100" value="50">
+    </div>
+    
+    <div class="container relative-demo">
+        <div class="box-container">
+            <div class="original-position">Position d'origine</div>
+            <div class="box" id="relative-box">position: relative</div>
+        </div>
+        
+        <div class="annotation" style="top: 150px; right: 30px;">
+            L'élément est déplacé par rapport à sa position normale.<br>
+            L'espace qu'il aurait occupé reste réservé.
+        </div>
+    </div>
+    
+    <!-- Position: Absolute -->
+    <h2>3. Position: absolute 🎯</h2>
+    <div class="description">
+        <p>Un élément avec <code>position: absolute</code> est positionné par rapport à son ancêtre positionné le plus proche (un élément parent qui a une position autre que static). S'il n'y en a pas, il se positionne par rapport au document.</p>
+        <pre>position: absolute;
+top: 40px;
+left: 40px;</pre>
+    </div>
+    
+    <div class="control-panel">
+        <label for="absolute-top">Top: <span id="absolute-top-value">40</span>px</label>
+        <input type="range" id="absolute-top" min="0" max="200" value="40">
+        
+        <label for="absolute-left">Left: <span id="absolute-left-value">40</span>px</label>
+        <input type="range" id="absolute-left" min="0" max="400" value="40">
+    </div>
+    
+    <div class="container absolute-demo">
+        <div class="parent">
+            <p>Parent positionné (position: relative)</p>
+            <div class="box" id="absolute-box">position: absolute</div>
+        </div>
+        
+        <div class="annotation" style="top: 100px; right: 30px;">
+            Cet élément est positionné par rapport à son parent.<br>
+            Il est sorti du flux normal du document et ne réserve pas d'espace.
+        </div>
+    </div>
+    
+    <!-- Position: Fixed -->
+    <h2>4. Position: fixed 📌</h2>
+    <div class="description">
+        <p>Un élément avec <code>position: fixed</code> est positionné par rapport à la fenêtre du navigateur. Il reste à la même position même lorsque la page défile.</p>
+        <pre>position: fixed;
+bottom: 20px;
+right: 20px;</pre>
+    </div>
+    
+    <div class="container fixed-demo">
+        <button id="add-fixed">Ajouter élément fixed</button>
+        <p>Un élément fixed restera visible même si vous faites défiler la page. Essayez!</p>
+        
+        <div class="annotation" style="top: 80px; left: 30px;">
+            L'élément fixed reste à la même position dans la fenêtre,<br>
+            même lorsque vous défilez la page.
+        </div>
+    </div>
+    
+    <!-- Position: Sticky -->
+    <h2>5. Position: sticky 🍯</h2>
+    <div class="description">
+        <p>Un élément avec <code>position: sticky</code> est positionné en fonction du défilement de l'utilisateur. Il est traité comme <code>position: relative</code> jusqu'à ce qu'il atteigne une position définie dans la fenêtre, puis il devient <code>position: fixed</code>.</p>
+        <pre>position: sticky;
+top: 10px;</pre>
+    </div>
+    
+    <div class="container">
+        <p>Faites défiler cette zone pour voir l'effet sticky:</p>
+        <div class="sticky-demo">
+            <div class="content">
+                <p>Début du contenu</p>
+                <div class="box">position: sticky</div>
+                <p>Continuez à défiler...</p>
+                <p>Plus de contenu...</p>
+                <p>Encore plus de contenu...</p>
+                <p>Observez comment l'élément reste "collé" quand vous défilez.</p>
+                <p>Lorsque vous continuez à défiler, l'élément reste en haut jusqu'à ce que son conteneur sorte de la vue.</p>
+                <p>Plus de contenu...</p>
+                <p>Continuez à défiler...</p>
+                <p>Presque à la fin...</p>
+                <p>Fin du contenu</p>
+            </div>
+        </div>
+        
+        <div class="annotation" style="top: 70px; right: 30px;">
+            L'élément se comporte comme relative jusqu'à atteindre<br>
+            un seuil de défilement, puis se fixe comme un élément fixed.
+        </div>
+    </div>
+    
+    <!-- Z-index -->
+    <h2>6. z-index: Contrôle de la superposition 🧩</h2>
+    <div class="description">
+        <p>La propriété <code>z-index</code> détermine l'ordre d'empilement des éléments positionnés. Les éléments avec une valeur de z-index plus élevée apparaissent au-dessus de ceux avec une valeur plus basse.</p>
+        <pre>position: absolute; /* ou fixed, relative, sticky */
+z-index: 5;</pre>
+    </div>
+    
+    <div class="control-panel">
+        <label for="z-index-1">Rouge z-index: <span id="z-index-1-value">1</span></label>
+        <input type="range" id="z-index-1" min="1" max="3" value="1">
+        
+        <label for="z-index-2">Bleu z-index: <span id="z-index-2-value">2</span></label>
+        <input type="range" id="z-index-2" min="1" max="3" value="2">
+        
+        <label for="z-index-3">Vert z-index: <span id="z-index-3-value">3</span></label>
+        <input type="range" id="z-index-3" min="1" max="3" value="3">
+    </div>
+    
+    <div class="container z-index-demo">
+        <div class="box box1" id="z-box-1">z-index: <span id="z-display-1">1</span></div>
+        <div class="box box2" id="z-box-2">z-index: <span id="z-display-2">2</span></div>
+        <div class="box box3" id="z-box-3">z-index: <span id="z-display-3">3</span></div>
+        
+        <div class="annotation" style="bottom: 20px; right: 30px;">
+            La propriété z-index contrôle l'ordre d'empilement des éléments.<br>
+            Elle fonctionne uniquement sur les éléments positionnés (non static).
+        </div>
+    </div>
+    
+    <!-- Display -->
+    <h2>7. Propriété display: Comportement des éléments ⛔</h2>
+    <div class="description">
+        <p>La propriété <code>display</code> définit comment un élément est affiché dans la mise en page. Elle influence le flux du document et le comportement des boîtes.</p>
+    </div>
+    
+    <div class="control-panel">
+        <button id="display-block">display: block</button>
+        <button id="display-inline">display: inline</button>
+        <button id="display-inline-block">display: inline-block</button>
+        <button id="display-none">display: none</button>
+    </div>
+    
+    <div class="container display-demo">
+        <div id="display-example" class="element block">Je suis un élément</div>
+        <span id="display-example2" class="element block">Je suis un autre élément</span>
+        <span id="display-example3" class="element block">Et encore un élément</span>
+        
+        <div class="annotation" style="top: 120px; right: 30px;">
+            <strong>block</strong>: prend toute la largeur disponible<br>
+            <strong>inline</strong>: largeur basée sur le contenu<br>
+            <strong>inline-block</strong>: hybride inline/block<br>
+            <strong>none</strong>: élément retiré du flux, invisible
+        </div>
+    </div>
+    
+    <script>
+        // Position: Relative controls
+        const relativeBox = document.getElementById('relative-box');
+        const relativeTopInput = document.getElementById('relative-top');
+        const relativeLeftInput = document.getElementById('relative-left');
+        const relativeTopValue = document.getElementById('relative-top-value');
+        const relativeLeftValue = document.getElementById('relative-left-value');
+        
+        relativeTopInput.addEventListener('input', function() {
+            relativeBox.style.top = this.value + 'px';
+            relativeTopValue.textContent = this.value;
+        });
+        
+        relativeLeftInput.addEventListener('input', function() {
+            relativeBox.style.left = this.value + 'px';
+            relativeLeftValue.textContent = this.value;
+        });
+        
+        // Position: Absolute controls
+        const absoluteBox = document.getElementById('absolute-box');
+        const absoluteTopInput = document.getElementById('absolute-top');
+        const absoluteLeftInput = document.getElementById('absolute-left');
+        const absoluteTopValue = document.getElementById('absolute-top-value');
+        const absoluteLeftValue = document.getElementById('absolute-left-value');
+        
+        absoluteTopInput.addEventListener('input', function() {
+            absoluteBox.style.top = this.value + 'px';
+            absoluteTopValue.textContent = this.value;
+        });
+        
+        absoluteLeftInput.addEventListener('input', function() {
+            absoluteBox.style.left = this.value + 'px';
+            absoluteLeftValue.textContent = this.value;
+        });
+        
+        // Position: Fixed controls
+        let fixedElement = null;
+        
+        document.getElementById('add-fixed').addEventListener('click', function() {
+            if (fixedElement) {
+                fixedElement.remove();
+                fixedElement = null;
+                this.textContent = 'Ajouter élément fixed';
+                return;
+            }
+            
+            fixedElement = document.createElement('div');
+            fixedElement.className = 'box';
+            fixedElement.style.position = 'fixed';
+            fixedElement.style.bottom = '20px';
+            fixedElement.style.right = '20px';
+            fixedElement.style.backgroundColor = '#9b59b6';
+            fixedElement.textContent = 'position: fixed';
+            
+            const removeButton = document.createElement('button');
+            removeButton.className = 'remove-btn';
+            removeButton.textContent = 'Supprimer';
+            removeButton.addEventListener('click', function() {
+                fixedElement.remove();
+                fixedElement = null;
+                document.getElementById('add-fixed').textContent = 'Ajouter élément fixed';
+            });
+            
+            fixedElement.appendChild(document.createElement('br'));
+            fixedElement.appendChild(removeButton);
+            
+            document.body.appendChild(fixedElement);
+            this.textContent = 'Élément ajouté';
+        });
+        
+        // z-index controls
+        const zBox1 = document.getElementById('z-box-1');
+        const zBox2 = document.getElementById('z-box-2');
+        const zBox3 = document.getElementById('z-box-3');
+        
+        const zIndex1Input = document.getElementById('z-index-1');
+        const zIndex2Input = document.getElementById('z-index-2');
+        const zIndex3Input = document.getElementById('z-index-3');
+        
+        const zIndex1Value = document.getElementById('z-index-1-value');
+        const zIndex2Value = document.getElementById('z-index-2-value');
+        const zIndex3Value = document.getElementById('z-index-3-value');
+        
+        const zDisplay1 = document.getElementById('z-display-1');
+        const zDisplay2 = document.getElementById('z-display-2');
+        const zDisplay3 = document.getElementById('z-display-3');
+        
+        zIndex1Input.addEventListener('input', function() {
+            zBox1.style.zIndex = this.value;
+            zIndex1Value.textContent = this.value;
+            zDisplay1.textContent = this.value;
+        });
+        
+        zIndex2Input.addEventListener('input', function() {
+            zBox2.style.zIndex = this.value;
+            zIndex2Value.textContent = this.value;
+            zDisplay2.textContent = this.value;
+        });
+        
+        zIndex3Input.addEventListener('input', function() {
+            zBox3.style.zIndex = this.value;
+            zIndex3Value.textContent = this.value;
+            zDisplay3.textContent = this.value;
+        });
+        
+        // Display controls
+        const displayExample = document.getElementById('display-example');
+        const displayExample2 = document.getElementById('display-example2');
+        const displayExample3 = document.getElementById('display-example3');
+        
+        document.getElementById('display-block').addEventListener('click', function() {
+            displayExample.className = 'element block';
+            displayExample2.className = 'element block';
+            displayExample3.className = 'element block';
+            displayExample.textContent = 'display: block';
+            displayExample2.textContent = 'display: block';
+            displayExample3.textContent = 'display: block';
+        });
+        
+        document.getElementById('display-inline').addEventListener('click', function() {
+            displayExample.className = 'element inline';
+            displayExample2.className = 'element inline';
+            displayExample3.className = 'element inline';
+            displayExample.textContent = 'display: inline';
+            displayExample2.textContent = 'display: inline';
+            displayExample3.textContent = 'display: inline';
+        });
+        
+        document.getElementById('display-inline-block').addEventListener('click', function() {
+            displayExample.className = 'element inline-block';
+            displayExample2.className = 'element inline-block';
+            displayExample3.className = 'element inline-block';
+            displayExample.textContent = 'display: inline-block';
+            displayExample2.textContent = 'display: inline-block';
+            displayExample3.textContent = 'display: inline-block';
+        });
+        
+        document.getElementById('display-none').addEventListener('click', function() {
+            displayExample.className = 'element none';
+            displayExample2.className = 'element none';
+            displayExample3.className = 'element none';
+        });
+    </script>
+
+
+</body></html>
