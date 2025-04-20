@@ -1,0 +1,821 @@
+<!DOCTYPE html><html lang="fr"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transitions et Transformations CSS</title>
+    <style>
+        /* Styles de base */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        h1 {
+            margin: 0;
+        }
+        
+        .subtitle {
+            font-weight: normal;
+            margin-top: 0.5rem;
+            opacity: 0.8;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        
+        .description {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        /* Grille de démos */
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .demo-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .demo-header {
+            background-color: #3498db;
+            color: white;
+            padding: 15px 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .demo-body {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        
+        .demo-description {
+            margin-top: 0;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        
+        .demo-controls {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        /* Démos de transition */
+        .transition-demo {
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .transition-box {
+            width: 100px;
+            height: 100px;
+            background-color: #3498db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        /* Propriétés de transition par défaut */
+        .transition-box {
+            transition-property: all;
+            transition-duration: 0.5s;
+            transition-timing-function: ease;
+            transition-delay: 0s;
+        }
+        
+        /* Démos de transformation */
+        .transform-demo {
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .transform-box {
+            width: 100px;
+            height: 100px;
+            background-color: #e74c3c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* Points de référence pour les transformations */
+        .origin-dot {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #333;
+            border-radius: 50%;
+            z-index: 10;
+        }
+        
+        /* Contrôles du formulaire */
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        select, input[type="range"], input[type="number"] {
+            width: 100%;
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .code-example {
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: Consolas, Monaco, 'Andale Mono', monospace;
+            white-space: pre-wrap;
+        }
+        
+        /* Exemples spécifiques */
+        
+        /* 1. Transition de couleur */
+        #color-transition:hover {
+            background-color: #9b59b6;
+        }
+        
+        /* 2. Transition de taille */
+        #size-transition:hover {
+            transform: scale(1.5);
+        }
+        
+        /* 3. Transition de position */
+        #position-transition:hover {
+            transform: translateX(50px);
+        }
+        
+        /* 4. Transition multiple */
+        #multiple-transition:hover {
+            background-color: #f39c12;
+            transform: rotate(45deg) scale(1.2);
+            border-radius: 50%;
+        }
+        
+        /* Exemples de timing functions */
+        #timing-linear {
+            transition-timing-function: linear;
+        }
+        
+        #timing-linear:hover {
+            transform: translateX(100px);
+        }
+        
+        #timing-ease {
+            transition-timing-function: ease;
+        }
+        
+        #timing-ease:hover {
+            transform: translateX(100px);
+        }
+        
+        #timing-ease-in {
+            transition-timing-function: ease-in;
+        }
+        
+        #timing-ease-in:hover {
+            transform: translateX(100px);
+        }
+        
+        #timing-ease-out {
+            transition-timing-function: ease-out;
+        }
+        
+        #timing-ease-out:hover {
+            transform: translateX(100px);
+        }
+        
+        #timing-ease-in-out {
+            transition-timing-function: ease-in-out;
+        }
+        
+        #timing-ease-in-out:hover {
+            transform: translateX(100px);
+        }
+        
+        /* Transformations de base */
+        
+        /* Translate (déplacement) */
+        #transform-translate {
+            transform: translateX(50px) translateY(20px);
+        }
+        
+        /* Rotation */
+        #transform-rotate {
+            transform: rotate(45deg);
+        }
+        
+        /* Scale (mise à l'échelle) */
+        #transform-scale {
+            transform: scale(1.5);
+        }
+        
+        /* Skew (inclinaison) */
+        #transform-skew {
+            transform: skewX(20deg) skewY(10deg);
+        }
+        
+        /* Transform origin */
+        #transform-origin {
+            transform-origin: top left;
+            transform: rotate(45deg);
+        }
+        
+        /* Transform 3D */
+        #transform-3d {
+            transform: perspective(500px) rotateY(45deg);
+        }
+        
+        /* Animation contrôlée */
+        #custom-transform-box {
+            transition: transform 0.5s ease;
+        }
+        
+        /* Animations CSS */
+        .animation-demo {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+        
+        .animated-box {
+            width: 50px;
+            height: 50px;
+            background-color: #2ecc71;
+            position: absolute;
+            border-radius: 4px;
+        }
+        
+        #animation1 {
+            animation: moveAround 4s infinite ease-in-out;
+            top: 0;
+            left: 0;
+        }
+        
+        @keyframes moveAround {
+            0% { 
+                top: 0; 
+                left: 0; 
+                background-color: #2ecc71; 
+            }
+            25% { 
+                top: 0; 
+                left: calc(100% - 50px); 
+                background-color: #3498db; 
+            }
+            50% { 
+                top: calc(100% - 50px); 
+                left: calc(100% - 50px); 
+                background-color: #9b59b6; 
+            }
+            75% { 
+                top: calc(100% - 50px); 
+                left: 0; 
+                background-color: #e74c3c; 
+            }
+            100% { 
+                top: 0; 
+                left: 0; 
+                background-color: #2ecc71; 
+            }
+        }
+        
+        #animation2 {
+            top: 50%;
+            left: 50%;
+            margin-top: -25px;
+            margin-left: -25px;
+            animation: pulseAndRotate 2s infinite alternate;
+        }
+        
+        @keyframes pulseAndRotate {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.5) rotate(180deg); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Transitions et Transformations CSS</h1>
+        <p class="subtitle">Guide interactif pour créer des animations et des effets visuels</p>
+    </header>
+    
+    <div class="container">
+        <div class="description">
+            <h3>Qu'est-ce que les transitions et transformations CSS?</h3>
+            <p>Les <strong>transitions CSS</strong> permettent d'animer en douceur les changements de propriétés CSS, créant ainsi des effets fluides et naturels.</p>
+            <p>Les <strong>transformations CSS</strong> permettent de manipuler les éléments HTML en 2D ou 3D, en les faisant pivoter, redimensionner, déplacer ou incliner sans affecter le flux du document.</p>
+        </div>
+        
+        <h2>1. Transformations CSS</h2>
+        <p>Les transformations CSS permettent de modifier visuellement un élément sans affecter le flux du document. Elles peuvent être utilisées pour déplacer, faire pivoter, mettre à l'échelle ou incliner des éléments.</p>
+        
+        <div class="demo-grid">
+            <!-- Translate -->
+            <div class="demo-card">
+                <div class="demo-header">translate()</div>
+                <div class="demo-body">
+                    <p class="demo-description">Déplace un élément horizontalement (X) et/ou verticalement (Y).</p>
+                    <div class="transform-demo">
+                        <div class="origin-dot"></div>
+                        <div id="transform-translate" class="transform-box">translate</div>
+                    </div>
+                    <div class="code-example">transform: translateX(50px) translateY(20px);</div>
+                </div>
+            </div>
+            
+            <!-- Rotate -->
+            <div class="demo-card">
+                <div class="demo-header">rotate()</div>
+                <div class="demo-body">
+                    <p class="demo-description">Fait tourner un élément autour de son point d'origine.</p>
+                    <div class="transform-demo">
+                        <div class="origin-dot"></div>
+                        <div id="transform-rotate" class="transform-box">rotate</div>
+                    </div>
+                    <div class="code-example">transform: rotate(45deg);</div>
+                </div>
+            </div>
+            
+            <!-- Scale -->
+            <div class="demo-card">
+                <div class="demo-header">scale()</div>
+                <div class="demo-body">
+                    <p class="demo-description">Redimensionne un élément en largeur et/ou en hauteur.</p>
+                    <div class="transform-demo">
+                        <div class="origin-dot"></div>
+                        <div id="transform-scale" class="transform-box">scale</div>
+                    </div>
+                    <div class="code-example">transform: scale(1.5);</div>
+                </div>
+            </div>
+            
+            <!-- Skew -->
+            <div class="demo-card">
+                <div class="demo-header">skew()</div>
+                <div class="demo-body">
+                    <p class="demo-description">Incline un élément sur les axes X et/ou Y.</p>
+                    <div class="transform-demo">
+                        <div class="origin-dot"></div>
+                        <div id="transform-skew" class="transform-box">skew</div>
+                    </div>
+                    <div class="code-example">transform: skewX(20deg) skewY(10deg);</div>
+                </div>
+            </div>
+            
+            <!-- Transform Origin -->
+            <div class="demo-card">
+                <div class="demo-header">transform-origin</div>
+                <div class="demo-body">
+                    <p class="demo-description">Définit le point d'origine autour duquel la transformation s'applique.</p>
+                    <div class="transform-demo">
+                        <div class="origin-dot" style="top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+                        <div id="transform-origin" class="transform-box">origin</div>
+                    </div>
+                    <div class="code-example">transform-origin: top left;
+transform: rotate(45deg);</div>
+                </div>
+            </div>
+            
+            <!-- 3D Transform -->
+            <div class="demo-card">
+                <div class="demo-header">Transform 3D</div>
+                <div class="demo-body">
+                    <p class="demo-description">Les transformations peuvent aussi s'appliquer en 3D.</p>
+                    <div class="transform-demo">
+                        <div class="origin-dot"></div>
+                        <div id="transform-3d" class="transform-box">3D</div>
+                    </div>
+                    <div class="code-example">transform: perspective(500px) rotateY(45deg);</div>
+                </div>
+            </div>
+        </div>
+
+        <h2>2. Transitions CSS</h2>
+        <p>Les transitions permettent d'animer progressivement les changements d'une propriété CSS. Pour créer une transition, vous définissez la propriété à animer, la durée, la fonction de timing et le délai.</p>
+        
+        <div class="demo-grid">
+            <!-- Transition de couleur -->
+            <div class="demo-card">
+                <div class="demo-header">Transition de couleur</div>
+                <div class="demo-body">
+                    <p class="demo-description">Passez la souris sur le carré pour voir la transition de couleur.</p>
+                    <div class="transition-demo">
+                        <div id="color-transition" class="transition-box">Hover</div>
+                    </div>
+                    <div class="code-example">
+.box {
+  background-color: #3498db;
+  transition: background-color 0.5s ease;
+}
+
+.box:hover {
+  background-color: #9b59b6;
+}</div>
+                </div>
+            </div>
+            
+            <!-- Transition de taille -->
+            <div class="demo-card">
+                <div class="demo-header">Transition de taille</div>
+                <div class="demo-body">
+                    <p class="demo-description">Passez la souris sur le carré pour voir la transition de taille.</p>
+                    <div class="transition-demo">
+                        <div id="size-transition" class="transition-box">Hover</div>
+                    </div>
+                    <div class="code-example">
+.box {
+  transition: transform 0.5s ease;
+}
+
+.box:hover {
+  transform: scale(1.5);
+}</div>
+                </div>
+            </div>
+            
+            <!-- Transition de position -->
+            <div class="demo-card">
+                <div class="demo-header">Transition de position</div>
+                <div class="demo-body">
+                    <p class="demo-description">Passez la souris sur le carré pour voir la transition de position.</p>
+                    <div class="transition-demo">
+                        <div id="position-transition" class="transition-box">Hover</div>
+                    </div>
+                    <div class="code-example">
+.box {
+  transition: transform 0.5s ease;
+}
+
+.box:hover {
+  transform: translateX(50px);
+}</div>
+                </div>
+            </div>
+            
+            <!-- Transition multiple -->
+            <div class="demo-card">
+                <div class="demo-header">Transition multiple</div>
+                <div class="demo-body">
+                    <p class="demo-description">Passez la souris pour voir plusieurs propriétés changer simultanément.</p>
+                    <div class="transition-demo">
+                        <div id="multiple-transition" class="transition-box">Hover</div>
+                    </div>
+                    <div class="code-example">
+.box {
+  transition: all 0.5s ease;
+}
+
+.box:hover {
+  background-color: #f39c12;
+  transform: rotate(45deg) scale(1.2);
+  border-radius: 50%;
+}</div>
+                </div>
+            </div>
+        </div>
+        
+        <h3>Fonctions de timing</h3>
+        <p>Les fonctions de timing définissent comment la vitesse de la transition change au fil du temps, créant des effets d'accélération ou de décélération.</p>
+        
+        <div class="demo-grid">
+            <!-- Linear -->
+            <div class="demo-card">
+                <div class="demo-header">linear</div>
+                <div class="demo-body">
+                    <p class="demo-description">Vitesse constante du début à la fin. Passez la souris sur le carré.</p>
+                    <div class="transition-demo">
+                        <div id="timing-linear" class="transition-box">Hover</div>
+                    </div>
+                    <div class="code-example">
+.box {
+  transition-property: transform;
+  transition-duration: 0.5s;
+  transition-timing-function: linear;
+}
+
+.box:hover {
+  transform: translateX(100px);
+}</div>
+                </div>
+            </div>
+            
+            <!-- Ease -->
+            <div class="demo-card">
+                <div class="demo-header">ease</div>
+                <div class="demo-body">
+                    <p class="demo-description">Démarrage lent, puis rapide, puis ralentissement (par défaut).</p>
+                    <div class="transition-demo">
+                        <div id="timing-ease" class="transition-box">Hover</div>
+                    </div>
+                    <div class="code-example">
+.box {
+  transition-property: transform;
+  transition-duration: 0.5s;
+  transition-timing-function: ease;
+}
+
+.box:hover {
+  transform: translateX(100px);
+}</div>
+                </div>
+            </div>
+            
+            <!-- Ease-in -->
+            <div class="demo-card">
+                <div class="demo-header">ease-in</div>
+                <div class="demo-body">
+                    <p class="demo-description">Démarrage lent puis accélération.</p>
+                    <div class="transition-demo">
+                        <div id="timing-ease-in" class="transition-box">Hover</div>
+                    </div>
+                    <div class="code-example">
+.box {
+  transition-property: transform;
+  transition-duration: 0.5s;
+  transition-timing-function: ease-in;
+}
+
+.box:hover {
+  transform: translateX(100px);
+}</div>
+                </div>
+            </div>
+            
+            <!-- Ease-out -->
+            <div class="demo-card">
+                <div class="demo-header">ease-out</div>
+                <div class="demo-body">
+                    <p class="demo-description">Démarrage rapide puis ralentissement.</p>
+                    <div class="transition-demo">
+                        <div id="timing-ease-out" class="transition-box">Hover</div>
+                    </div>
+                    <div class="code-example">
+.box {
+  transition-property: transform;
+  transition-duration: 0.5s;
+  transition-timing-function: ease-out;
+}
+
+.box:hover {
+  transform: translateX(100px);
+}</div>
+                </div>
+            </div>
+        </div>
+                
+        <h2>3. Créez votre propre transformation</h2>
+        <p>Utilisez les contrôles ci-dessous pour expérimenter avec différentes transformations.</p>
+        
+        <div class="demo-card">
+            <div class="demo-header">Transformation personnalisée</div>
+            <div class="demo-body">
+                <div class="demo-controls">
+                    <div class="control-group">
+                        <label for="translate-x">translateX: <span id="translate-x-value">0</span>px</label>
+                        <input type="range" id="translate-x" min="-100" max="100" value="0">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="translate-y">translateY: <span id="translate-y-value">0</span>px</label>
+                        <input type="range" id="translate-y" min="-100" max="100" value="0">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="rotate">rotate: <span id="rotate-value">0</span>deg</label>
+                        <input type="range" id="rotate" min="0" max="360" value="0">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="scale">scale: <span id="scale-value">1</span></label>
+                        <input type="range" id="scale" min="0.5" max="2" value="1" step="0.1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="skew-x">skewX: <span id="skew-x-value">0</span>deg</label>
+                        <input type="range" id="skew-x" min="-45" max="45" value="0">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="skew-y">skewY: <span id="skew-y-value">0</span>deg</label>
+                        <input type="range" id="skew-y" min="-45" max="45" value="0">
+                    </div>
+                </div>
+                
+                <div class="transform-demo">
+                    <div class="origin-dot"></div>
+                    <div id="custom-transform-box" class="transform-box">Modifiez-moi</div>
+                </div>
+                
+                <div class="code-example" id="custom-transform-code">transform: translateX(0px) translateY(0px) rotate(0deg) scale(1) skewX(0deg) skewY(0deg);</div>
+            </div>
+        </div>
+        
+        <h2>4. Animations avec @keyframes</h2>
+        <p>Au-delà des transitions, CSS permet de créer des animations complexes avec la règle @keyframes, qui définit les étapes d'une animation.</p>
+        
+        <div class="demo-grid">
+            <!-- Animation en mouvement -->
+            <div class="demo-card">
+                <div class="demo-header">Animation de mouvement</div>
+                <div class="demo-body">
+                    <p class="demo-description">Un carré qui se déplace le long d'un parcours carré, en changeant de couleur.</p>
+                    <div class="animation-demo">
+                        <div id="animation1" class="animated-box"></div>
+                    </div>
+                    <div class="code-example">
+@keyframes moveAround {
+  0% { 
+    top: 0; 
+    left: 0; 
+    background-color: #2ecc71; 
+  }
+  25% { 
+    top: 0; 
+    left: calc(100% - 50px); 
+    background-color: #3498db; 
+  }
+  50% { 
+    top: calc(100% - 50px); 
+    left: calc(100% - 50px); 
+    background-color: #9b59b6; 
+  }
+  75% { 
+    top: calc(100% - 50px); 
+    left: 0; 
+    background-color: #e74c3c; 
+  }
+  100% { 
+    top: 0; 
+    left: 0; 
+    background-color: #2ecc71; 
+  }
+}
+
+.box {
+  animation: moveAround 4s infinite ease-in-out;
+}</div>
+                </div>
+            </div>
+            
+            <!-- Animation pulsation et rotation -->
+            <div class="demo-card">
+                <div class="demo-header">Pulsation et rotation</div>
+                <div class="demo-body">
+                    <p class="demo-description">Un carré qui pulse et tourne en alternance.</p>
+                    <div class="animation-demo">
+                        <div id="animation2" class="animated-box"></div>
+                    </div>
+                    <div class="code-example">
+@keyframes pulseAndRotate {
+  0% { transform: scale(1) rotate(0deg); }
+  100% { transform: scale(1.5) rotate(180deg); }
+}
+
+.box {
+  animation: pulseAndRotate 2s infinite alternate;
+}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Contrôle de la transformation personnalisée
+        const translateX = document.getElementById('translate-x');
+        const translateY = document.getElementById('translate-y');
+        const rotate = document.getElementById('rotate');
+        const scale = document.getElementById('scale');
+        const skewX = document.getElementById('skew-x');
+        const skewY = document.getElementById('skew-y');
+        
+        const translateXValue = document.getElementById('translate-x-value');
+        const translateYValue = document.getElementById('translate-y-value');
+        const rotateValue = document.getElementById('rotate-value');
+        const scaleValue = document.getElementById('scale-value');
+        const skewXValue = document.getElementById('skew-x-value');
+        const skewYValue = document.getElementById('skew-y-value');
+        
+        const customTransformBox = document.getElementById('custom-transform-box');
+        const customTransformCode = document.getElementById('custom-transform-code');
+        
+        function updateCustomTransform() {
+            const tx = translateX.value;
+            const ty = translateY.value;
+            const r = rotate.value;
+            const s = scale.value;
+            const sx = skewX.value;
+            const sy = skewY.value;
+            
+            translateXValue.textContent = tx;
+            translateYValue.textContent = ty;
+            rotateValue.textContent = r;
+            scaleValue.textContent = s;
+            skewXValue.textContent = sx;
+            skewYValue.textContent = sy;
+            
+            const transform = `translateX(${tx}px) translateY(${ty}px) rotate(${r}deg) scale(${s}) skewX(${sx}deg) skewY(${sy}deg)`;
+            
+            customTransformBox.style.transform = transform;
+            customTransformCode.textContent = `transform: ${transform};`;
+        }
+        
+        translateX.addEventListener('input', updateCustomTransform);
+        translateY.addEventListener('input', updateCustomTransform);
+        rotate.addEventListener('input', updateCustomTransform);
+        scale.addEventListener('input', updateCustomTransform);
+        skewX.addEventListener('input', updateCustomTransform);
+        skewY.addEventListener('input', updateCustomTransform);
+        
+        // Initialiser
+        updateCustomTransform();
+        
+        // Positionnement des points d'origine
+        document.querySelectorAll('.transform-demo').forEach(demo => {
+            const dot = demo.querySelector('.origin-dot');
+            if (dot) {
+                dot.style.top = '50%';
+                dot.style.left = '50%';
+                dot.style.transform = 'translate(-50%, -50%)';
+            }
+        });
+    </script>
+
+
+</body></html>
